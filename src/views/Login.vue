@@ -15,7 +15,7 @@
               <user/>
             </el-icon>
             <el-input
-                  v-model:value="loginUser.loginName"
+                  v-model="loginUser.loginName"
                   class="input"
                   placeholder="请输入用户名">
             </el-input>
@@ -25,7 +25,7 @@
               <key/>
             </el-icon>
             <el-input
-                  v-model:value="loginUser.password"
+                  v-model="loginUser.password"
                   class="input"
                   placeholder="请输入密码"
                   type="password"
@@ -34,15 +34,20 @@
           </el-form-item>
         </el-form>
         <el-button type="primary" id="login-button" @click="login">登&nbsp;&nbsp;录</el-button>
+
       </el-main>
     </el-container>
   </div>
 </template>
 
-<script>
+<script lang="ts">
   import {User, Key} from '@element-plus/icons'
-  // import axios from 'axios'
+  import axios from 'axios'
   import {ref} from 'vue'
+  import {ElMessage} from 'element-plus'
+
+  declare let hexMd5: any;
+  declare let KEY: any;
 
   export default {
     name: "Login",
@@ -60,6 +65,18 @@
       //登录
       const login = () => {
         console.log("开始登录")
+        loginUser.value.password = hexMd5(loginUser.value.password + KEY);
+        axios.post('http://127.0.0.1:9001/system/admin/user/login', loginUser.value).then((response) => {
+          const data = response.data;
+          if (data.success) {
+            ElMessage({
+              message: '登录成功！',
+              type: 'success',
+            })
+          } else {
+            ElMessage.error('用户名或密码错误！')
+          }
+        })
       };
 
       return {
