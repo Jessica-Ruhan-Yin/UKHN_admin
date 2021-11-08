@@ -41,15 +41,16 @@
 </template>
 
 <script lang="ts">
+  import {defineComponent, ref, computed} from 'vue';
   import {User, Key} from '@element-plus/icons'
   import axios from 'axios'
-  import {ref} from 'vue'
   import {ElMessage} from 'element-plus'
+  import store from "@/store";
 
   declare let hexMd5: any;
   declare let KEY: any;
 
-  export default {
+  export default defineComponent({
     name: "Login",
     components: {
       User,
@@ -57,6 +58,10 @@
     },
 
     setup() {
+      //登录后保存
+      const user = computed(() => store.state.user);
+
+      //用来登录
       const loginUser = ref({
         loginName: "",
         password: ""
@@ -73,6 +78,8 @@
               message: '登录成功！',
               type: 'success',
             })
+            store.commit("setUser", data.content)
+            window.open("/homepage","_self")
           } else {
             ElMessage.error('用户名或密码错误！')
           }
@@ -84,7 +91,7 @@
         login
       }
     }
-  }
+  })
 </script>
 
 <style scoped>
