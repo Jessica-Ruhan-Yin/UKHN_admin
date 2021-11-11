@@ -2,11 +2,15 @@ import {createRouter, createWebHistory, RouteRecordRaw} from 'vue-router'
 import Home from '../views/Home.vue'
 import Login from '../views/Login.vue'
 import HomeIntro from '../views/admin/homepage/home-intro.vue'
+import HomeAdvertise from '../views/admin/homepage/home-advertise.vue'
 
 
 const routes: Array<RouteRecordRaw> = [
   {
-    path: '/',
+    path: '',
+    redirect: "/login"
+  }, {
+    path: '/login',
     name: 'Login',
     component: Login
   },
@@ -19,6 +23,10 @@ const routes: Array<RouteRecordRaw> = [
         path: '/admin/homepage/intro',
         name: 'HomeIntro',
         component: HomeIntro,
+      },{
+        path: '/admin/homepage/advertise',
+        name: 'HomeAdvertise',
+        component: HomeAdvertise,
       },
     ]
   },

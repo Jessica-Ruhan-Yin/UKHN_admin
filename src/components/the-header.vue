@@ -4,26 +4,65 @@
       <div>
         <img id="logo" src="../assets/logo.png">
         <span id="title">同乡会官网后台管理系统</span>
-        <el-button round
-                   style="color: rgb(133, 137, 252);padding: 10px;margin-left: 72%">
-          <el-icon class="icon" size="15" style="color: rgb(133, 137, 252)">
-            <switch-button/>
-          </el-icon>
-          退出登录
-        </el-button>
+
+        <el-popconfirm
+              confirm-button-text="确定"
+              cancel-button-text="取消"
+              title="确认退出登录？"
+              @confirm="logout()"
+        >
+          <template #reference>
+            <el-button round
+                       style="color: rgb(133, 137, 252);padding: 10px;margin-left: 65%">
+              <el-icon class="icon" size="15" style="color: rgb(133, 137, 252)">
+                <switch-button/>
+              </el-icon>
+              退出登录
+            </el-button>
+          </template>
+        </el-popconfirm>
+
       </div>
     </el-header>
   </el-container>
 </template>
 
 <script>
-  import {defineComponent} from 'vue';
+  import {defineComponent,computed} from 'vue';
   import {SwitchButton} from '@element-plus/icons'
+  import axios from 'axios'
+  import store from "@/store";
+  import {ElMessage} from 'element-plus'
 
   export default defineComponent({
     name: "the-header",
     components: {
       SwitchButton
+    },
+    setup(){
+
+      const user = computed(() => store.state.user);
+
+      const logout = () => {
+        console.log("退出登录开始");
+        axios.get('http://127.0.0.1:9001/system/admin/user/logout/' + user.value.token).then((response) => {
+          const data = response.data;
+          if (data.success) {
+            ElMessage({
+              message: '退出登录成功！',
+              type: 'success',
+            })
+            store.commit("setUser", {});
+            window.open("/login","_self")
+          } else {
+            ElMessage.error('退出登录失败！')
+          }
+        });
+      };
+
+      return{
+        logout
+      }
     }
   })
 </script>
