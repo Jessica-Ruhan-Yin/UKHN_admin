@@ -1,6 +1,48 @@
 <template>
-  <h3>首页资源更新——介绍</h3>
-  <p class="home-intro-title">首页轮播显示</p>
+  <h3>同乡会介绍资源更新——同乡会活动</h3>
+  <p class="intro-activity-title">同乡会活动轮播显示</p>
+  <el-button class="fresh"
+             @click="ListShowSlide"
+  >刷新
+  </el-button>
+
+  <el-button class="add"
+             @click="add"
+  >新增
+  </el-button>
+
+  <!--新增时的弹出框表单-->
+  <el-dialog v-model="addFormVisible" title="新增同乡会介绍——同乡会活动部分轮播图文">
+    <el-form>
+
+      <upload v-bind:uploadFile="uploadFile"/>
+
+      <el-form-item label="文案">
+        <el-input autocomplete="off"
+                  :rows="4"
+                  type="textarea"
+                  style="margin-top: 10px"></el-input>
+      </el-form-item>
+
+      <el-form-item>
+        <div class="block">
+          <span class="demonstration">Child options expand when hovered</span>
+          <el-cascader
+                v-model="value"
+                :options="options"
+                :props="{ expandTrigger: 'hover' }"
+                @change="handleChange"
+          ></el-cascader>
+        </div>
+      </el-form-item>
+    </el-form>
+    <template #footer>
+            <span class="dialog-footer">
+              <el-button @click="addFormVisible = false">取消</el-button>
+              <el-button type="primary">保存</el-button>
+            </span>
+    </template>
+  </el-dialog>
 
   <el-row>
     <el-col
@@ -24,58 +66,29 @@
         />
         <div style="padding: 14px;text-align: center;font-size: small">
           <p>{{slide.text}}</p>
-          <p>{{slide.createdAt}}</p>
+          <p>{{slide.date}}</p>
         </div>
       </el-card>
     </el-col>
   </el-row>
 
 
-  <div id="home-intro-allSlides" class="demo-collapse">
+  <div id="intro-activity-allSlides" class="demo-collapse">
     <el-collapse accordion>
       <el-collapse-item>
         <template #title>
-          <span class="home-intro-title">显示全部轮播图文</span>
+          <span class="intro-activity-title">显示全部轮播图文</span>
         </template>
 
-        <el-button id="fresh"
-                   class="normal-button"
+        <el-button class="fresh"
                    @click="ListAllSlide"
         >刷新
         </el-button>
 
-        <el-button id="add"
-                   class="normal-button"
-                   @click="add"
-        >新增
-        </el-button>
-
-
-        <!--新增时的弹出框表单-->
-        <el-dialog v-model="addFormVisible" title="新增首页介绍部分轮播图文">
-          <el-form>
-
-            <upload v-bind:homeIntroSlide="homeIntroSlide"/>
-
-            <el-form-item label="文案">
-              <el-input autocomplete="off"
-                        :rows="4"
-                        type="textarea"
-                        style="margin-top: 10px"></el-input>
-            </el-form-item>
-          </el-form>
-          <template #footer>
-            <span class="dialog-footer">
-              <el-button @click="addFormVisible = false">取消</el-button>
-              <el-button type="primary">保存</el-button>
-            </span>
-          </template>
-        </el-dialog>
-
         <!--显示所有图文的表格-->
         <el-table :data="tableData" stripe border height="400px">
           <el-table-column label="id" prop="id" width="90px" align="center"/>
-          <el-table-column label="上传日期" prop="createdAt" width="100px" align="center"/>
+          <el-table-column label="上传日期" prop="date" width="100px" align="center"/>
           <el-table-column label="图片" width="120px" align="center" prop="image">
             <template v-slot="scope">
               <img :src="scope.row.image" width="100" height="70" align="center"/>
@@ -83,14 +96,24 @@
           </el-table-column>
           <el-table-column label="文案" prop="text" width="400px" align="center"/>
           <el-table-column label="操作" prop="operation" align="center">
-            <template #default="scope">
-              <el-button size="mini" class="normal-button" @click="edit">编辑</el-button>
+            <template v-slot="scope">
+              <el-button size="mini" class="normal-button" @click="edit(scope.row)">编辑</el-button>
               <el-button size="mini" class="normal-button">详情</el-button>
-              <el-button
-                    size="mini"
-                    type="danger"
-              >删除
-              </el-button>
+
+              <el-popconfirm
+                    confirm-button-text="确定"
+                    cancel-button-text="取消"
+                    title="确认删除该条图文？"
+                    @confirm="deleteRow(scope.row)"
+              >
+                <template #reference>
+                  <el-button
+                        size="mini"
+                        type="danger"
+                  >删除
+                  </el-button>
+                </template>
+              </el-popconfirm>
             </template>
           </el-table-column>
         </el-table>
@@ -106,10 +129,11 @@
                         type="text"
               ></el-input>
             </el-form-item>
-            <el-form-item label="创建时间" style="margin-top: 10px; vertical-align: middle">
+            <el-form-item label="上传日期" style="margin-top: 10px; vertical-align: middle">
               <el-input autocomplete="off"
                         :rows="1"
-                        type="text"></el-input>
+                        type="text"
+              ></el-input>
             </el-form-item>
 
             <upload/>
@@ -151,7 +175,7 @@
   </div>
 
   <div>
-    <p class="home-intro-title" style="margin-bottom: 20px">首页介绍文案编辑</p>
+    <p class="intro-activity-title" style="margin-bottom: 20px">首页介绍文案编辑</p>
     <div id="intro-text"></div>
     <el-button class="normal-button" style="margin-top: 10px">保存</el-button>
     <el-button type="danger" style="margin-top: 10px">取消</el-button>
@@ -166,9 +190,10 @@
   import axios from "axios";
   import {ElMessage} from 'element-plus';
   import Upload from '@/components/upload.vue';
+  import {Tool} from '@/util/tool';
 
   export default defineComponent({
-    name: "home-intro",
+    name: "intro-activity",
     components: {
       Upload
     },
@@ -186,9 +211,10 @@
       const editFormVisible = ref(false);
 
       //定义新增的图文
-      const homeIntroSlide = ref({
+      const uploadFile = ref({
         image: '',
-        text: ''
+        text: '',
+        category: '',
       });
 
       //富文本框赋值
@@ -196,15 +222,14 @@
 
       // 显示展示的轮播图文
       const ListShowSlide = () => {
-        axios.post("http://127.0.0.1:9002/business/admin/home-intro-slide/list", {
+        axios.post("http://127.0.0.1:9002/business/admin/intro-activity-slide/list", {
           page: "1",
-          size: "4",
-          isShow: "Y"
+          size: "4"
         }).then((response) => {
           const data = response.data;
           if (data.success) {
             for (let i = 0; i < data.content.list.length; i++) {
-              data.content.list[i]["createdAt"] = data.content.list[i]["createdAt"].slice(0, 10);
+              data.content.list[i]["date"] = data.content.list[i]["date"].slice(0, 10);
             }
             showData.value = data.content.list
           } else {
@@ -215,13 +240,13 @@
 
       // 显示全部轮播图文
       const ListAllSlide = () => {
-        axios.post("http://127.0.0.1:9002/business/admin/home-intro-slide/list", {
+        axios.post("http://127.0.0.1:9002/business/admin/intro-activity-slide/list", {
           page: "1"
         }).then((response) => {
           const data = response.data;
           if (data.success) {
             for (let i = 0; i < data.content.list.length; i++) {
-              data.content.list[i]["createdAt"] = data.content.list[i]["createdAt"].slice(0, 10);
+              data.content.list[i]["date"] = data.content.list[i]["date"].slice(0, 10);
             }
             tableData.value = data.content.list
           } else {
@@ -233,13 +258,27 @@
       //新增轮播图文
       const add = () => {
         addFormVisible.value = true;
-        //homeIntroSlide.value = {};
+        //introActivitySlide.value = {};
       }
 
       //编辑轮播图文
-      const edit = () => {
+      const edit = (row: any) => {
         editFormVisible.value = true;
-        //homeIntroSlide.value = {};
+        console.log(row)
+        // introActivitySlide.value = Tool.copy(slide);
+      }
+
+      //删除轮播图文
+      const deleteRow = (row: any) => {
+        axios.get('http://127.0.0.1:9000/business/admin/intro-activity-slide/delete/' + row.id).then((response) => {
+          const data = response.data;
+          if (data.success) {
+            ElMessage.success("删除成功！")
+            ListAllSlide();
+          } else {
+            ElMessage.error("删除失败！")
+          }
+        })
       }
 
       onMounted(() => {
@@ -254,10 +293,11 @@
         ListShowSlide,
         ListAllSlide,
         add,
-        homeIntroSlide,
+        uploadFile,
         addFormVisible,
         editFormVisible,
         edit,
+        deleteRow
       }
     }
 
@@ -269,7 +309,7 @@
     font-family: Tahoma;
   }
 
-  .home-intro-title {
+  .intro-activity-title {
     font-family: Tahoma;
     font-weight: bold;
     font-size: 14px;
@@ -283,7 +323,7 @@
     color: #757dff;
   }
 
-  #home-intro-allSlides {
+  #intro-activity-allSlides {
     margin-bottom: 20px;
     margin-top: 20px;
   }
@@ -292,13 +332,17 @@
     margin-top: 10px;
   }
 
-  #add {
+  .add {
+    color: #868EFF;
+    border-color: #868EFF;
     margin-left: 30px;
     margin-bottom: 10px;
   }
 
-  #fresh {
-    margin-left: 70%;
+  .fresh {
+    color: #868EFF;
+    border-color: #868EFF;
+    margin-left: 80%;
     margin-bottom: 10px;
   }
 

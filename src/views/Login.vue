@@ -79,7 +79,7 @@
               type: 'success',
             })
             store.commit("setUser", data.content)
-            window.open("/admin/homepage/intro","_self")
+            window.open("/admin/introduction/intro","_self")
           } else {
             ElMessage.error('用户名或密码错误！')
           }

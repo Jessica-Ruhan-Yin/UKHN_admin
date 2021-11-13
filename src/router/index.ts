@@ -1,8 +1,7 @@
 import {createRouter, createWebHistory, RouteRecordRaw} from 'vue-router'
 import Home from '../views/Home.vue'
 import Login from '../views/Login.vue'
-import HomeIntro from '../views/admin/homepage/home-intro.vue'
-import HomeAdvertise from '../views/admin/homepage/home-advertise.vue'
+import IntroActivity from '../views/admin/introduction/intro-activity.vue'
 
 
 const routes: Array<RouteRecordRaw> = [
@@ -20,13 +19,9 @@ const routes: Array<RouteRecordRaw> = [
     component: Home,
     children: [
       {
-        path: '/admin/homepage/intro',
-        name: 'HomeIntro',
-        component: HomeIntro,
-      },{
-        path: '/admin/homepage/advertise',
-        name: 'HomeAdvertise',
-        component: HomeAdvertise,
+        path: '/admin/intro/activity',
+        name: 'IntroActivity',
+        component: IntroActivity,
       },
     ]
   },

@@ -14,9 +14,7 @@
                 </el-icon>
                 <span>首页</span>
               </template>
-              <router-link class="link" to="/admin/homepage/intro">
-                <el-menu-item index="1-1">介绍</el-menu-item>
-              </router-link>
+              <el-menu-item index="1-1">介绍</el-menu-item>
               <el-menu-item index="1-2">广告</el-menu-item>
               <el-menu-item index="1-3">同乡会活动</el-menu-item>
               <el-menu-item index="1-4">合作机构</el-menu-item>
@@ -63,7 +61,9 @@
                 </el-icon>
                 <span>同乡会介绍</span>
               </template>
-              <el-menu-item index="5-1">同乡会活动</el-menu-item>
+              <router-link class="link" to="/admin/intro/activity">
+                <el-menu-item index="5-1">同乡会活动</el-menu-item>
+              </router-link>
               <el-menu-item index="5-2">简介</el-menu-item>
               <el-menu-item index="5-3">理事会</el-menu-item>
               <el-menu-item index="5-4">招新</el-menu-item>
