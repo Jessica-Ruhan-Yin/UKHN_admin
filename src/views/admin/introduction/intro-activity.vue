@@ -159,20 +159,11 @@
     </el-collapse>
   </div>
 
-  <!--富文本框-->
-  <div>
-    <p class="intro-activity-title" style="margin-bottom: 20px">首页介绍文案编辑</p>
-    <div id="intro-text"></div>
-    <el-button class="normal-button" style="margin-top: 10px">保存</el-button>
-    <el-button type="danger" style="margin-top: 10px">取消</el-button>
-  </div>
-
 
 </template>
 
 <script lang="ts">
   import {reactive, defineComponent, onMounted, ref} from 'vue';
-  import E from 'wangeditor';
   import axios from "axios";
   import {ElMessage} from 'element-plus';
   import Upload from '@/components/upload.vue';
@@ -195,9 +186,6 @@
 
       const addFormVisible = ref(false);
       const editFormVisible = ref(false);
-
-      //富文本框赋值
-      const editor = new E('#intro-text');
 
       // 显示展示的轮播图文
       const ListShowSlide = () => {
@@ -267,7 +255,7 @@
       const edit = (row: any) => {
         editFormVisible.value = true;
         console.log(row)
-        // introActivitySlide.value = Tool.copy(slide);
+
       }
 
       //删除轮播图文
@@ -286,7 +274,6 @@
       onMounted(() => {
         ListShowSlide();
         ListAllSlide();
-        editor.create();
       });
 
       return {

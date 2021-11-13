@@ -64,7 +64,9 @@
               <router-link class="link" to="/admin/intro/activity">
                 <el-menu-item index="5-1">同乡会活动</el-menu-item>
               </router-link>
-              <el-menu-item index="5-2">简介</el-menu-item>
+              <router-link class="link" to="/admin/intro/introduction">
+                <el-menu-item index="5-2">简介</el-menu-item>
+              </router-link>
               <el-menu-item index="5-3">理事会</el-menu-item>
               <el-menu-item index="5-4">招新</el-menu-item>
             </el-sub-menu>
