@@ -13,33 +13,25 @@
 
   <!--新增时的弹出框表单-->
   <el-dialog v-model="addFormVisible" title="新增同乡会介绍——同乡会活动部分轮播图文">
-    <el-form>
+    <el-form v-model="uploadFile">
 
-      <upload v-bind:uploadFile="uploadFile"/>
+      <el-form-item label="文件" prop="image">
+        <upload v-model:image="uploadFile.image"/>
+      </el-form-item>
 
-      <el-form-item label="文案">
+      <el-form-item label="文案" prop="text">
         <el-input autocomplete="off"
                   :rows="4"
                   type="textarea"
-                  style="margin-top: 10px"></el-input>
+                  style="margin-top: 10px"
+                  v-model="uploadFile.text"></el-input>
       </el-form-item>
 
-      <el-form-item>
-        <div class="block">
-          <span class="demonstration">Child options expand when hovered</span>
-          <el-cascader
-                v-model="value"
-                :options="options"
-                :props="{ expandTrigger: 'hover' }"
-                @change="handleChange"
-          ></el-cascader>
-        </div>
-      </el-form-item>
     </el-form>
     <template #footer>
             <span class="dialog-footer">
               <el-button @click="addFormVisible = false">取消</el-button>
-              <el-button type="primary">保存</el-button>
+              <el-button type="primary" @click="saveFile">保存</el-button>
             </span>
     </template>
   </el-dialog>
@@ -54,11 +46,6 @@
       <el-card
             :body-style="{ padding: '0px',
       height:'250px'}">
-        <el-image
-              v-show="slide.image"
-              src="../../../../public/static/image/pic3.jpg"
-              class="image"
-        />
         <el-image
               v-show="slide.image"
               v-bind:src="slide.image"
@@ -104,7 +91,7 @@
                     confirm-button-text="确定"
                     cancel-button-text="取消"
                     title="确认删除该条图文？"
-                    @confirm="deleteRow(scope.row)"
+                    @confirm="deleteFile(scope.row)"
               >
                 <template #reference>
                   <el-button
@@ -117,7 +104,6 @@
             </template>
           </el-table-column>
         </el-table>
-
 
         <!--编辑时弹出的模态框-->
         <el-dialog v-model="editFormVisible" title="编辑首页介绍部分轮播图文">
@@ -158,7 +144,6 @@
           </template>
         </el-dialog>
 
-
         <!--分页组件-->
         <el-pagination
               id="pagination"
@@ -174,6 +159,7 @@
     </el-collapse>
   </div>
 
+  <!--富文本框-->
   <div>
     <p class="intro-activity-title" style="margin-bottom: 20px">首页介绍文案编辑</p>
     <div id="intro-text"></div>
@@ -185,7 +171,7 @@
 </template>
 
 <script lang="ts">
-  import {reactive, defineComponent, toRefs, onMounted, ref, computed} from 'vue';
+  import {reactive, defineComponent, onMounted, ref} from 'vue';
   import E from 'wangeditor';
   import axios from "axios";
   import {ElMessage} from 'element-plus';
@@ -209,13 +195,6 @@
 
       const addFormVisible = ref(false);
       const editFormVisible = ref(false);
-
-      //定义新增的图文
-      const uploadFile = ref({
-        image: '',
-        text: '',
-        category: '',
-      });
 
       //富文本框赋值
       const editor = new E('#intro-text');
@@ -255,11 +234,34 @@
         });
       };
 
-      //新增轮播图文
+      //新增轮播图文，打开模态框表单
       const add = () => {
         addFormVisible.value = true;
-        //introActivitySlide.value = {};
       }
+
+      const uploadFile = reactive({
+        image: '',
+        text: '',
+        category: '00000501',
+      });
+
+      //保存新增轮播图文
+      const saveFile = () => {
+        console.log(uploadFile);
+        axios.post('http://127.0.0.1:9000/business/admin/intro-activity-slide/save', {
+          image: uploadFile.image,
+          text: uploadFile.text,
+          category: uploadFile.category
+        }).then((response) => {
+          const data = response.data;
+          if (data.success) {
+            ElMessage.success("新增轮播图文成功！")
+            addFormVisible.value = false;
+          } else {
+            ElMessage.error(data.message);
+          }
+        });
+      };
 
       //编辑轮播图文
       const edit = (row: any) => {
@@ -269,7 +271,7 @@
       }
 
       //删除轮播图文
-      const deleteRow = (row: any) => {
+      const deleteFile = (row: any) => {
         axios.get('http://127.0.0.1:9000/business/admin/intro-activity-slide/delete/' + row.id).then((response) => {
           const data = response.data;
           if (data.success) {
@@ -293,11 +295,12 @@
         ListShowSlide,
         ListAllSlide,
         add,
-        uploadFile,
         addFormVisible,
         editFormVisible,
         edit,
-        deleteRow
+        deleteFile,
+        saveFile,
+        uploadFile,
       }
     }
 

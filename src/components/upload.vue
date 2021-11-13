@@ -1,5 +1,6 @@
 <template>
   <div>
+
     <el-upload
           action="http://127.0.0.1:9003/file/admin/upload"
           :file-list="fileList"
@@ -15,6 +16,7 @@
       </el-icon>
     </el-upload>
     <div slot="tip" class="el-upload__tip">请上传图片格式文件</div>
+    <p v-show="imageUrl" id="url">图片地址为：{{imageUrl}}</p>
   </div>
 </template>
 
@@ -26,16 +28,18 @@
   export default defineComponent({
     name: "upload",
     components: {Plus},
-    props: {
-      uploadFile: {
-        type: Object,
-        required: true
-      }
-    },
+    // props: {
+    //   image: {
+    //     type: String,
+    //     required: true
+    //   }
+    // },
+    props: ['image'],
+    emits: ['update:image'],
 
 
-    setup(props) {
-      const uploadFile = toRefs(props.uploadFile);
+    setup(props, context) {
+      let imageUrl = ref();
 
       //上传图片前判断格式
       const handleBeforeUpload = (file: any) => {
@@ -69,18 +73,18 @@
 
 
       //上传图片成功回调
-      const handleImageSuccess = (response: any, file: any) => {
+      const handleImageSuccess = (response: any) => {
         console.log("图片地址：", response.content);
-        let image = response.content;
-        uploadFile.image = image;
+        imageUrl.value = response.content;
+        context.emit('update:image', imageUrl.value)
       };
 
-
       return {
+        imageUrl,
         handleBeforeUpload,
         handleImageSuccess,
         handlePictureCardPreview,
-        handleOnExceed
+        handleOnExceed,
       }
     }
 
@@ -88,5 +92,9 @@
 </script>
 
 <style scoped>
+  #url {
+    font-family: Tahoma;
+    margin-top: 15px;
+  }
 
 </style>
