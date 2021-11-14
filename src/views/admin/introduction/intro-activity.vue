@@ -44,8 +44,7 @@
           :offset="index > 0 ? 1 : 0"
     >
       <el-card
-            :body-style="{ padding: '0px',
-      height:'250px'}">
+            :body-style="{ padding: '0px', height:'250px'}">
         <el-image
               v-show="slide.image"
               v-bind:src="slide.image"
@@ -66,11 +65,6 @@
         <template #title>
           <span class="intro-activity-title">显示全部轮播图文</span>
         </template>
-
-        <el-button class="fresh"
-                   @click="ListAllSlide"
-        >刷新
-        </el-button>
 
         <!--显示所有图文的表格-->
         <el-table :data="tableData" stripe border height="400px">
@@ -108,38 +102,39 @@
         <!--编辑时弹出的模态框-->
         <el-dialog v-model="editFormVisible" title="编辑首页介绍部分轮播图文">
 
-          <el-form>
-            <el-form-item label="id" style="margin-top: 10px; vertical-align: middle">
+          <el-form :data="formData">
+            <el-form-item label="id" prop="id" style="margin-top: 10px; vertical-align: middle">
               <el-input autocomplete="off"
                         :rows="1"
                         type="text"
+                        disabled
+                        v-model="formData.id"
               ></el-input>
             </el-form-item>
-            <el-form-item label="上传日期" style="margin-top: 10px; vertical-align: middle">
+            <el-form-item label="上传日期" prop="date" style="margin-top: 10px; vertical-align: middle">
               <el-input autocomplete="off"
                         :rows="1"
                         type="text"
+                        disabled
+                        v-model="formData.date"
               ></el-input>
             </el-form-item>
-
-            <upload/>
-
-            <el-form-item label="文案" style="margin-top: 10px; vertical-align: middle">
+            <el-form-item label="图片" prop="formData.image">
+              <upload v-model:image="formData.image"/>
+            </el-form-item>
+            <el-form-item label="文案" prop="text" style="margin-top: 10px; vertical-align: middle">
               <el-input autocomplete="off"
                         :rows="4"
                         type="textarea"
+                        v-model="formData.text"
               ></el-input>
-            </el-form-item>
-            <el-form-item label="是否显示" style="margin-top: 10px; vertical-align: middle">
-              <el-radio v-model="showRadio" label="1">是</el-radio>
-              <el-radio v-model="showRadio" label="2">否</el-radio>
             </el-form-item>
 
           </el-form>
           <template #footer>
             <span class="dialog-footer">
               <el-button @click="editFormVisible = false">取消</el-button>
-              <el-button type="primary">保存</el-button>
+              <el-button type="primary" @click="saveEdit">保存</el-button>
             </span>
           </template>
         </el-dialog>
@@ -245,17 +240,48 @@
           if (data.success) {
             ElMessage.success("新增轮播图文成功！")
             addFormVisible.value = false;
+            ListAllSlide();
+            ListShowSlide();
           } else {
             ElMessage.error(data.message);
           }
         });
       };
 
-      //编辑轮播图文
+
+      const formData = reactive({
+        id: '',
+        date: '',
+        image: '',
+        text: ''
+      });//定义表单数据
+
+      //编辑轮播图文，打开表单，表单赋值
       const edit = (row: any) => {
         editFormVisible.value = true;
-        console.log(row)
-
+        console.log(row);
+        formData.id = row.id;
+        formData.date = row.date;
+        formData.image = row.image;
+        formData.text = row.text;
+      };
+      //保存编辑
+      const saveEdit = () => {
+        axios.post('http://127.0.0.1:9000/business/admin/intro-activity-slide/save', {
+          id: formData.id,
+          image: formData.image,
+          text: formData.text
+        }).then((response) => {
+          const data = response.data;
+          if (data.success) {
+            ElMessage.success("更新轮播图文成功！")
+            editFormVisible.value = false;
+            ListAllSlide();
+            ListShowSlide();
+          } else {
+            ElMessage.error(data.message);
+          }
+        });
       }
 
       //删除轮播图文
@@ -288,6 +314,8 @@
         deleteFile,
         saveFile,
         uploadFile,
+        formData,
+        saveEdit
       }
     }
 
