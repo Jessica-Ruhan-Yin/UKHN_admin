@@ -2,7 +2,7 @@
   <div>
 
     <el-upload
-          action="http://127.0.0.1:9003/file/admin/upload"
+          action="http://127.0.0.1:9000/file/admin/upload"
           :file-list="fileList"
           auto-upload="true"
           list-type="picture-card"

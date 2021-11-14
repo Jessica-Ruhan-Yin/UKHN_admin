@@ -184,7 +184,7 @@
 
       // 显示展示的轮播图文
       const ListShowSlide = () => {
-        axios.post("http://127.0.0.1:9002/business/admin/intro-activity-slide/list", {
+        axios.post("http://127.0.0.1:9000/business/admin/intro-activity-slide/list", {
           page: "1",
           size: "4"
         }).then((response) => {
@@ -202,7 +202,7 @@
 
       // 显示全部轮播图文
       const ListAllSlide = () => {
-        axios.post("http://127.0.0.1:9002/business/admin/intro-activity-slide/list", {
+        axios.post("http://127.0.0.1:9000/business/admin/intro-activity-slide/list", {
           page: "1"
         }).then((response) => {
           const data = response.data;
@@ -221,13 +221,11 @@
       const add = () => {
         addFormVisible.value = true;
       }
-
       const uploadFile = reactive({
         image: '',
         text: '',
         category: '00000501',
       });
-
       //保存新增轮播图文
       const saveFile = () => {
         console.log(uploadFile);
@@ -255,7 +253,6 @@
         image: '',
         text: ''
       });//定义表单数据
-
       //编辑轮播图文，打开表单，表单赋值
       const edit = (row: any) => {
         editFormVisible.value = true;
