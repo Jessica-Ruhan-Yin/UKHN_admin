@@ -2,6 +2,7 @@
   <div>
 
     <el-upload
+          :ref="setRefUpload"
           action="http://127.0.0.1:9000/file/admin/upload"
           :file-list="fileList"
           auto-upload="true"
@@ -21,25 +22,20 @@
 </template>
 
 <script lang="ts">
-  import {defineComponent, ref, toRefs} from 'vue';
+  import {defineComponent, getCurrentInstance, onMounted, ref} from 'vue';
   import {ElMessage} from 'element-plus';
   import {Plus} from '@element-plus/icons'
 
   export default defineComponent({
     name: "upload",
     components: {Plus},
-    // props: {
-    //   image: {
-    //     type: String,
-    //     required: true
-    //   }
-    // },
     props: ['image'],
     emits: ['update:image'],
 
 
     setup(props, context) {
       let imageUrl = ref();
+
 
       //上传图片前判断格式
       const handleBeforeUpload = (file: any) => {
@@ -76,7 +72,8 @@
       const handleImageSuccess = (response: any) => {
         console.log("图片地址：", response.content);
         imageUrl.value = response.content;
-        context.emit('update:image', imageUrl.value)
+        context.emit('update:image', imageUrl.value);
+        imageUrl.value = '';
       };
 
       return {

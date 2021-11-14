@@ -67,7 +67,7 @@
         </template>
 
         <!--显示所有图文的表格-->
-        <el-table :data="tableData" stripe border height="400px">
+        <el-table :data="tableData" stripe border>
           <el-table-column label="id" prop="id" width="90px" align="center"/>
           <el-table-column label="上传日期" prop="date" width="100px" align="center"/>
           <el-table-column label="图片" width="120px" align="center" prop="image">
@@ -142,12 +142,14 @@
         <!--分页组件-->
         <el-pagination
               id="pagination"
-              v-model:currentPage="currentPage1"
-              :page-size="10"
-              layout="prev, pager, next, jumper"
-              :total="100"
-              @size-change="handleSizeChange"
+              layout="prev, pager, next"
+              :pager-count="11"
+              v-model:current-page="pagination.current"
+              :page-size="pagination.size"
+              :total="pagination.total"
               @current-change="handleCurrentChange"
+              @prev-click="handlePrev"
+              @next-click="handleNext"
         >
         </el-pagination>
       </el-collapse-item>
@@ -171,10 +173,17 @@
     },
 
 
-    setup: function (props, context) {
-      console.log(props, context)
+    setup: function () {
       const showData = ref();//定义展示的数据
       showData.value = [];
+
+      const param = ref();
+      param.value = {};
+      const pagination = reactive({
+        page: 1,
+        size: 6,
+        total: 0
+      });
 
       const tableData = ref();//定义表格数据
       tableData.value = [];
@@ -201,11 +210,16 @@
       };
 
       // 显示全部轮播图文
-      const ListAllSlide = () => {
+      const ListAllSlide = (params: any) => {
         axios.post("http://127.0.0.1:9000/business/admin/intro-activity-slide/list", {
-          page: "1"
+          page: params.page,
+          size: params.size,
         }).then((response) => {
           const data = response.data;
+          //重置分页按钮
+          pagination.total = parseInt(data.content.total)
+          pagination.page = params.page;
+          //读取数据
           if (data.success) {
             for (let i = 0; i < data.content.list.length; i++) {
               data.content.list[i]["date"] = data.content.list[i]["date"].slice(0, 10);
@@ -214,6 +228,15 @@
           } else {
             ElMessage.error(data.message);
           }
+        });
+      };
+
+      //表格点击页码时触发
+      const handleCurrentChange = (clickPage: any) => {
+        console.log("此次点击的页码是：" + clickPage);
+        ListAllSlide({
+          page: clickPage,
+          size: 6
         });
       };
 
@@ -237,8 +260,14 @@
           const data = response.data;
           if (data.success) {
             ElMessage.success("新增轮播图文成功！")
+            uploadFile.image='';
+            uploadFile.category='';
+            uploadFile.text='';
             addFormVisible.value = false;
-            ListAllSlide();
+            ListAllSlide({
+              page: pagination.page,
+              size: pagination.size,
+            });
             ListShowSlide();
           } else {
             ElMessage.error(data.message);
@@ -255,12 +284,11 @@
       });//定义表单数据
       //编辑轮播图文，打开表单，表单赋值
       const edit = (row: any) => {
-        editFormVisible.value = true;
-        console.log(row);
         formData.id = row.id;
         formData.date = row.date;
         formData.image = row.image;
         formData.text = row.text;
+        editFormVisible.value = true;
       };
       //保存编辑
       const saveEdit = () => {
@@ -272,8 +300,13 @@
           const data = response.data;
           if (data.success) {
             ElMessage.success("更新轮播图文成功！")
+            formData.image='';
+            formData.text='';
             editFormVisible.value = false;
-            ListAllSlide();
+            ListAllSlide({
+              page: pagination.page,
+              size: pagination.size,
+            });
             ListShowSlide();
           } else {
             ElMessage.error(data.message);
@@ -287,7 +320,10 @@
           const data = response.data;
           if (data.success) {
             ElMessage.success("删除成功！")
-            ListAllSlide();
+            ListAllSlide({
+              page: pagination.page,
+              size: pagination.size,
+            });
           } else {
             ElMessage.error("删除失败！")
           }
@@ -296,7 +332,10 @@
 
       onMounted(() => {
         ListShowSlide();
-        ListAllSlide();
+        ListAllSlide({
+          page: pagination.page,
+          size: pagination.size
+        });
       });
 
       return {
@@ -312,7 +351,9 @@
         saveFile,
         uploadFile,
         formData,
-        saveEdit
+        saveEdit,
+        pagination,
+        handleCurrentChange
       }
     }
 
