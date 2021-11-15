@@ -1,41 +1,6 @@
 <template>
   <h3>同乡会介绍资源更新——同乡会活动</h3>
   <p class="intro-activity-title">同乡会活动轮播显示</p>
-  <el-button class="fresh"
-             @click="ListShowSlide"
-  >刷新
-  </el-button>
-
-  <el-button class="add"
-             @click="add"
-  >新增
-  </el-button>
-
-  <!--新增时的弹出框表单-->
-  <el-dialog v-model="addFormVisible" title="新增同乡会介绍——同乡会活动部分轮播图文">
-    <el-form v-model="uploadFile">
-
-      <el-form-item label="文件" prop="image">
-        <upload v-model:image="uploadFile.image"/>
-      </el-form-item>
-
-      <el-form-item label="文案" prop="text">
-        <el-input autocomplete="off"
-                  :rows="4"
-                  type="textarea"
-                  style="margin-top: 10px"
-                  v-model="uploadFile.text"></el-input>
-      </el-form-item>
-
-    </el-form>
-    <template #footer>
-            <span class="dialog-footer">
-              <el-button @click="addFormVisible = false">取消</el-button>
-              <el-button type="primary" @click="saveFile">保存</el-button>
-            </span>
-    </template>
-  </el-dialog>
-
   <el-row>
     <el-col
           v-for="(slide,index) in showData"
@@ -65,6 +30,41 @@
         <template #title>
           <span class="intro-activity-title">显示全部轮播图文</span>
         </template>
+
+        <el-button class="fresh"
+                   @click="ListShowSlide"
+        >刷新
+        </el-button>
+
+        <el-button class="add"
+                   @click="add"
+        >新增
+        </el-button>
+        <!--新增时的弹出框表单-->
+        <el-dialog v-model="addFormVisible" title="新增同乡会介绍——同乡会活动部分轮播图文">
+          <el-form v-model="uploadFile">
+
+            <el-form-item label="文件" prop="image">
+              <upload v-model:image="uploadFile.image"
+                      v-bind:category="'00000501'"/>
+            </el-form-item>
+
+            <el-form-item label="文案" prop="text">
+              <el-input autocomplete="off"
+                        :rows="4"
+                        type="textarea"
+                        style="margin-top: 10px"
+                        v-model="uploadFile.text"></el-input>
+            </el-form-item>
+
+          </el-form>
+          <template #footer>
+            <span class="dialog-footer">
+              <el-button @click="addFormVisible = false">取消</el-button>
+              <el-button type="primary" @click="saveFile">保存</el-button>
+            </span>
+          </template>
+        </el-dialog>
 
         <!--显示所有图文的表格-->
         <el-table :data="tableData" stripe border>
@@ -260,9 +260,9 @@
           const data = response.data;
           if (data.success) {
             ElMessage.success("新增轮播图文成功！")
-            uploadFile.image='';
-            uploadFile.category='';
-            uploadFile.text='';
+            uploadFile.image = '';
+            uploadFile.category = '';
+            uploadFile.text = '';
             addFormVisible.value = false;
             ListAllSlide({
               page: pagination.page,
@@ -300,8 +300,8 @@
           const data = response.data;
           if (data.success) {
             ElMessage.success("更新轮播图文成功！")
-            formData.image='';
-            formData.text='';
+            formData.image = '';
+            formData.text = '';
             editFormVisible.value = false;
             ListAllSlide({
               page: pagination.page,

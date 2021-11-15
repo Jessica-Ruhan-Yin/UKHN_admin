@@ -3,7 +3,7 @@
 
     <el-upload
           :ref="setRefUpload"
-          action="http://127.0.0.1:9000/file/admin/upload"
+          :action="url"
           :file-list="fileList"
           auto-upload="true"
           list-type="picture-card"
@@ -29,12 +29,15 @@
   export default defineComponent({
     name: "upload",
     components: {Plus},
-    props: ['image'],
+    props: ['image', 'category'],
     emits: ['update:image'],
 
 
     setup(props, context) {
       let imageUrl = ref();
+      let cate = ref(props.category);
+      let url = ref();
+      url.value = "http://127.0.0.1:9000/file/admin/upload/" + cate.value;
 
 
       //上传图片前判断格式
@@ -82,6 +85,8 @@
         handleImageSuccess,
         handlePictureCardPreview,
         handleOnExceed,
+        cate,
+        url
       }
     }
 
