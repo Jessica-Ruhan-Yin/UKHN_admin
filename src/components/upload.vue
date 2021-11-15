@@ -2,7 +2,7 @@
   <div>
 
     <el-upload
-          :ref="setRefUpload"
+          ref="refUpload"
           :action="url"
           :file-list="fileList"
           auto-upload="true"
@@ -24,7 +24,7 @@
 <script lang="ts">
   import {defineComponent, getCurrentInstance, onMounted, ref} from 'vue';
   import {ElMessage} from 'element-plus';
-  import {Plus} from '@element-plus/icons'
+  import {Plus} from '@element-plus/icons';
 
   export default defineComponent({
     name: "upload",
@@ -35,9 +35,12 @@
 
     setup(props, context) {
       let imageUrl = ref();
+
       let cate = ref(props.category);
       let url = ref();
       url.value = "http://127.0.0.1:9000/file/admin/upload/" + cate.value;
+
+      const {proxy}: any = getCurrentInstance()
 
 
       //上传图片前判断格式
@@ -79,6 +82,10 @@
         imageUrl.value = '';
       };
 
+      const clearFiles = () => {
+        proxy.$refs.refUpload.clearFiles();
+      }
+
       return {
         imageUrl,
         handleBeforeUpload,
@@ -86,7 +93,8 @@
         handlePictureCardPreview,
         handleOnExceed,
         cate,
-        url
+        url,
+        clearFiles
       }
     }
 

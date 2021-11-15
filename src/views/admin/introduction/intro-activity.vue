@@ -45,7 +45,8 @@
           <el-form v-model="uploadFile">
 
             <el-form-item label="文件" prop="image">
-              <upload v-model:image="uploadFile.image"
+              <upload ref="uploadComp"
+                      v-model:image="uploadFile.image"
                       v-bind:category="'00000501'"/>
             </el-form-item>
 
@@ -120,7 +121,9 @@
               ></el-input>
             </el-form-item>
             <el-form-item label="图片" prop="formData.image">
-              <upload v-model:image="formData.image"/>
+              <upload ref="uploadComp"
+                      v-model:image="formData.image"
+                      v-bind:category="'00000501'"/>
             </el-form-item>
             <el-form-item label="文案" prop="text" style="margin-top: 10px; vertical-align: middle">
               <el-input autocomplete="off"
@@ -160,7 +163,7 @@
 </template>
 
 <script lang="ts">
-  import {reactive, defineComponent, onMounted, ref} from 'vue';
+  import {reactive, defineComponent, onMounted, ref, getCurrentInstance} from 'vue';
   import axios from "axios";
   import {ElMessage} from 'element-plus';
   import Upload from '@/components/upload.vue';
@@ -263,6 +266,7 @@
             uploadFile.image = '';
             uploadFile.category = '';
             uploadFile.text = '';
+            clearImage();
             addFormVisible.value = false;
             ListAllSlide({
               page: pagination.page,
@@ -274,6 +278,11 @@
           }
         });
       };
+      //保存后清除上传图片框中的图片
+      const uploadComp = ref();
+      const clearImage = () => {
+        uploadComp.value.clearFiles();
+      }
 
 
       const formData = reactive({
@@ -302,6 +311,7 @@
             ElMessage.success("更新轮播图文成功！")
             formData.image = '';
             formData.text = '';
+            clearImage();
             editFormVisible.value = false;
             ListAllSlide({
               page: pagination.page,
@@ -353,7 +363,8 @@
         formData,
         saveEdit,
         pagination,
-        handleCurrentChange
+        handleCurrentChange,
+        uploadComp,
       }
     }
 
