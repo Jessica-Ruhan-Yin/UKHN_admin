@@ -27,7 +27,7 @@
   import {Plus} from '@element-plus/icons';
 
   export default defineComponent({
-    name: "upload",
+    name: "bigFile",
     components: {Plus},
     props: ['image', 'category'],
     emits: ['update:image'],
@@ -79,6 +79,7 @@
         console.log("图片地址：", response.content);
         imageUrl.value = response.content;
         context.emit('update:image', imageUrl.value);
+        imageUrl.value = '';
       };
 
       const clearFiles = () => {

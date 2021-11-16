@@ -61,10 +61,10 @@
                 </el-icon>
                 <span>同乡会介绍</span>
               </template>
-              <router-link class="link" to="/admin/intro/activity">
+              <router-link class="link" to="/home/intro/activity">
                 <el-menu-item index="5-1">同乡会活动</el-menu-item>
               </router-link>
-              <router-link class="link" to="/admin/intro/introduction">
+              <router-link class="link" to="/home/intro/introduction">
                 <el-menu-item index="5-2">简介</el-menu-item>
               </router-link>
               <el-menu-item index="5-3">理事会</el-menu-item>

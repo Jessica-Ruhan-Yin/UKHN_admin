@@ -1,8 +1,9 @@
 import {createRouter, createWebHistory, RouteRecordRaw} from 'vue-router'
 import Home from '../views/Home.vue'
 import Login from '../views/Login.vue'
+import Detail from '../views/Detail.vue'
 import IntroActivity from '../views/admin/introduction/intro-activity.vue'
-import IntroIntroduction from '../views/admin/introduction/intro-introduction.vue'
+import ActivityDetail from '../views/admin/introduction/activity_detail.vue'
 
 
 const routes: Array<RouteRecordRaw> = [
@@ -20,17 +21,25 @@ const routes: Array<RouteRecordRaw> = [
     component: Home,
     children: [
       {
-        path: '/admin/intro/activity',
+        path: '/home/intro/activity',
         name: 'IntroActivity',
         component: IntroActivity,
       },
+    ]
+  },
+  {
+    path: '/detail',
+    name: 'Detail',
+    component: Detail,
+    children: [
       {
-        path: '/admin/intro/introduction',
-        name: 'IntroIntroduction',
-        component: IntroIntroduction,
+        path: '/detail/activity/detail',
+        name: 'ActivityDetail',
+        component: ActivityDetail,
       },
     ]
   },
+
 
 ]
 

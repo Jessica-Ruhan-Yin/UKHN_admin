@@ -74,10 +74,7 @@
         axios.post('http://127.0.0.1:9000/system/admin/user/login', loginUser.value).then((response) => {
           const data = response.data;
           if (data.success) {
-            ElMessage({
-              message: '登录成功！',
-              type: 'success',
-            })
+            ElMessage.success('登录成功！')
             store.commit("setUser", data.content)
             window.open("/admin/introduction/intro","_self")
           } else {

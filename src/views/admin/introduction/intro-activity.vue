@@ -80,7 +80,7 @@
           <el-table-column label="操作" prop="operation" align="center">
             <template v-slot="scope">
               <el-button size="mini" class="normal-button" @click="edit(scope.row)">编辑</el-button>
-              <el-button size="mini" class="normal-button">详情</el-button>
+              <el-button size="mini" class="normal-button" @click="jumpToDetail(scope.row)">详情</el-button>
 
               <el-popconfirm
                     confirm-button-text="确定"
@@ -125,14 +125,6 @@
                       v-model:image="formData.image"
                       v-bind:category="'00000501'"/>
             </el-form-item>
-            <el-form-item label="文案" prop="text" style="margin-top: 10px; vertical-align: middle">
-              <el-input autocomplete="off"
-                        :rows="4"
-                        type="textarea"
-                        v-model="formData.text"
-              ></el-input>
-            </el-form-item>
-
           </el-form>
           <template #footer>
             <span class="dialog-footer">
@@ -163,11 +155,14 @@
 </template>
 
 <script lang="ts">
-  import {reactive, defineComponent, onMounted, ref, getCurrentInstance} from 'vue';
+  import {reactive, defineComponent, onMounted, ref} from 'vue';
   import axios from "axios";
   import {ElMessage} from 'element-plus';
   import Upload from '@/components/upload.vue';
   import {Tool} from '@/util/tool';
+  import router from '@/router/index';
+
+  declare let SessionStorage: any;
 
   export default defineComponent({
     name: "intro-activity",
@@ -340,6 +335,15 @@
         })
       }
 
+
+      //跳转到活动详情
+      const jumpToDetail = (row: any) => {
+        SessionStorage.set("slideId", row.id);
+        // router.push({path: '/detail/activity/detail', query: {id: row.id}})
+        router.push("/detail/activity/detail");
+        console.log("跳转详情，id：" + row.id);
+      }
+
       onMounted(() => {
         ListShowSlide();
         ListAllSlide({
@@ -365,6 +369,7 @@
         pagination,
         handleCurrentChange,
         uploadComp,
+        jumpToDetail
       }
     }
 
