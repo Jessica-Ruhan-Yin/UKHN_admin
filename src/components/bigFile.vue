@@ -16,7 +16,7 @@
         <plus/>
       </el-icon>
     </el-upload>
-    <div slot="tip" class="el-upload__tip">请上传图片格式文件</div>
+    <div slot="tip" class="el-upload__tip">请上传文件</div>
     <p v-show="imageUrl" id="url">图片地址为：{{imageUrl}}</p>
   </div>
 </template>
@@ -29,7 +29,7 @@
   export default defineComponent({
     name: "bigFile",
     components: {Plus},
-    props: ['image', 'category'],
+    props: ['image', 'category', 'limit', 'fileType'],
     emits: ['update:image'],
 
 
@@ -43,19 +43,23 @@
       const {proxy}: any = getCurrentInstance()
 
 
-      //上传图片前判断格式
+      //上传前判断格式
       const handleBeforeUpload = (file: any) => {
-        let suffixes = ["jpg", "jpeg", "png"];
+        // let suffixes = ["jpg", "jpeg", "png"];
+        let fileType = ref(props.fileType);
+        let suffixes = ref();
+        suffixes.value = fileType.value;
+
         let fileName = file.name;
         let suffix = fileName.substring(fileName.lastIndexOf(".") + 1, fileName.length).toLowerCase();
         let validateSuffix = false;
-        for (let i = 0; i < suffixes.length; i++) {
-          if (suffixes[i].toLowerCase() === suffix) {
+        for (let i = 0; i < suffixes.value.length; i++) {
+          if (suffixes.value[i].toLowerCase() === suffix) {
             validateSuffix = true;
           }
         }
         if (!validateSuffix) {
-          ElMessage.warning("文件格式不正确，请上传图片文件！");
+          ElMessage.warning("文件格式不正确，请上传图片或视频文件！");
         }
         return validateSuffix;
       };
