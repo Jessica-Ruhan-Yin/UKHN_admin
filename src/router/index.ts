@@ -4,6 +4,8 @@ import Login from '../views/Login.vue'
 import Detail from '../views/Detail.vue'
 import IntroActivity from '../views/admin/introduction/intro-activity.vue'
 import ActivityDetail from '../views/admin/introduction/activity_detail.vue'
+import IntroEnroll from '../views/admin/introduction/intro_enroll.vue'
+import IntroCouncil from '../views/admin/introduction/intro_council.vue'
 
 
 const routes: Array<RouteRecordRaw> = [
@@ -24,6 +26,14 @@ const routes: Array<RouteRecordRaw> = [
         path: '/home/intro/activity',
         name: 'IntroActivity',
         component: IntroActivity,
+      },{
+        path: '/home/intro/enroll',
+        name: 'IntroEnroll',
+        component: IntroEnroll,
+      },{
+        path: '/home/intro/council',
+        name: 'IntroCouncil',
+        component: IntroCouncil,
       },
     ]
   },

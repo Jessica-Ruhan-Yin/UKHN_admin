@@ -64,11 +64,12 @@
               <router-link class="link" to="/home/intro/activity">
                 <el-menu-item index="5-1">同乡会活动</el-menu-item>
               </router-link>
-              <router-link class="link" to="/home/intro/introduction">
-                <el-menu-item index="5-2">简介</el-menu-item>
+              <router-link class="link" to="/home/intro/council">
+                <el-menu-item index="5-2">理事会</el-menu-item>
               </router-link>
-              <el-menu-item index="5-3">理事会</el-menu-item>
-              <el-menu-item index="5-4">招新</el-menu-item>
+              <router-link class="link" to="/home/intro/enroll">
+                <el-menu-item index="5-3">招新</el-menu-item>
+              </router-link>
             </el-sub-menu>
           </el-menu>
         </el-col>
