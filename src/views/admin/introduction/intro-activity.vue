@@ -45,9 +45,10 @@
           <el-form v-model="uploadFile">
 
             <el-form-item label="文件" prop="image">
-              <upload ref="uploadComp"
-                      v-model:image="uploadFile.image"
-                      v-bind:category="'00000501'"/>
+              <big-file ref="uploadComp"
+                        v-model:image="uploadFile.image"
+                        v-bind:category="'00000501'"
+                        v-bind:file-type='["jpg", "jpeg", "png","mp4"]'/>
             </el-form-item>
 
             <el-form-item label="文案" prop="text">
@@ -120,11 +121,14 @@
                         v-model="formData.date"
               ></el-input>
             </el-form-item>
-            <el-form-item label="图片" prop="formData.image">
-              <upload ref="uploadComp"
-                      v-model:image="formData.image"
-                      v-bind:category="'00000501'"/>
+
+            <el-form-item label="文件" prop="image">
+              <big-file ref="uploadComp"
+                        v-model:image="formData.image"
+                        v-bind:category="'00000501'"
+                        v-bind:file-type='["jpg", "jpeg", "png"]'/>
             </el-form-item>
+
           </el-form>
           <template #footer>
             <span class="dialog-footer">
@@ -158,7 +162,7 @@
   import {reactive, defineComponent, onMounted, ref} from 'vue';
   import axios from "axios";
   import {ElMessage} from 'element-plus';
-  import Upload from '@/components/upload.vue';
+  import BigFile from '@/components/bigFile.vue';
   import {Tool} from '@/util/tool';
   import router from '@/router/index';
 
@@ -167,7 +171,7 @@
   export default defineComponent({
     name: "intro-activity",
     components: {
-      Upload
+      BigFile
     },
 
 
@@ -339,7 +343,6 @@
       //跳转到活动详情
       const jumpToDetail = (row: any) => {
         SessionStorage.set("slideId", row.id);
-        // router.push({path: '/detail/activity/detail', query: {id: row.id}})
         router.push("/detail/activity/detail");
         console.log("跳转详情，id：" + row.id);
       }

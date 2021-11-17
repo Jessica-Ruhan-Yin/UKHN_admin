@@ -38,14 +38,13 @@
 
       let cate = ref(props.category);
       let url = ref();
-      url.value = "http://127.0.0.1:9000/file/admin/upload/" + cate.value;
+      url.value = "http://127.0.0.1:9000/file/admin/oss-upload/" + cate.value;
 
       const {proxy}: any = getCurrentInstance()
 
 
       //上传前判断格式
       const handleBeforeUpload = (file: any) => {
-        // let suffixes = ["jpg", "jpeg", "png"];
         let fileType = ref(props.fileType);
         let suffixes = ref();
         suffixes.value = fileType.value;
@@ -81,7 +80,7 @@
       //上传图片成功回调
       const handleImageSuccess = (response: any) => {
         console.log("图片地址：", response.content);
-        imageUrl.value = response.content;
+        imageUrl.value = response.content.path;
         context.emit('update:image', imageUrl.value);
         imageUrl.value = '';
       };
