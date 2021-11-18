@@ -163,7 +163,6 @@
   import axios from "axios";
   import {ElMessage} from 'element-plus';
   import BigFile from '@/components/bigFile.vue';
-  import {Tool} from '@/util/tool';
   import router from '@/router/index';
 
   declare let SessionStorage: any;
