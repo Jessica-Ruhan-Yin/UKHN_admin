@@ -1,6 +1,6 @@
 <template>
   <h3>同乡会介绍资源更新——加入我们</h3>
-  <p class="intro-activity-title">信息编辑</p>
+  <p class="intro-enroll-title">信息编辑</p>
 
   <el-button class="button"
              @click="edit"
@@ -191,7 +191,7 @@
     font-family: Tahoma;
   }
 
-  .intro-activity-title {
+  .intro-enroll-title {
     font-family: Tahoma;
     font-weight: bold;
     font-size: 14px;

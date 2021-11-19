@@ -129,6 +129,13 @@
                         v-bind:file-type='["jpg", "jpeg", "png"]'/>
             </el-form-item>
 
+            <el-form-item label="文案" prop="text" style="margin-top: 10px; vertical-align: middle">
+              <el-input autocomplete="off"
+                        :rows="1"
+                        type="text"
+                        v-model="formData.text"
+              ></el-input>
+            </el-form-item>
           </el-form>
           <template #footer>
             <span class="dialog-footer">
