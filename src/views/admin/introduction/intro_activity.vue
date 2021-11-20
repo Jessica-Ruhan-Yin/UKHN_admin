@@ -102,7 +102,7 @@
         </el-table>
 
         <!--编辑时弹出的模态框-->
-        <el-dialog v-model="editFormVisible" title="编辑首页介绍部分轮播图文">
+        <el-dialog v-model="editFormVisible" title="编辑轮播图文">
 
           <el-form :data="formData">
             <el-form-item label="id" prop="id" style="margin-top: 10px; vertical-align: middle">
@@ -125,7 +125,7 @@
             <el-form-item label="文件" prop="image">
               <big-file ref="uploadComp"
                         v-model:image="formData.image"
-                        v-bind:category="'00000501'"
+                        v-bind:category="'00000503'"
                         v-bind:file-type='["jpg", "jpeg", "png"]'/>
             </el-form-item>
 

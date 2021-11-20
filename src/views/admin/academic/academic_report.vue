@@ -1,6 +1,6 @@
 <template>
-  <h3>学术交流资源更新——研讨会</h3>
-  <p class="title">研讨会目录</p>
+  <h3>学术交流资源更新——学术报告</h3>
+  <p class="intro-activity-row">报告目录</p>
 
   <el-button class="fresh"
              @click="ListShowSlide"
@@ -12,31 +12,22 @@
   >新增
   </el-button>
   <!--新增时的弹出框表单-->
-  <el-dialog v-model="addFormVisible" title="新增研讨会">
-    <el-form v-model="uploadFile">
+  <el-dialog v-model="addFormVisible" title="新增学术报告">
+    <el-form v-model="newForum">
 
-      <el-form-item label="日期" prop="date" style="margin-top: 10px; vertical-align: middle">
-        <el-date-picker v-model="uploadFile.date"
-                        type="date"
-                        placeholder="选择日期"
-                        format="YYYY/MM/DD"
-                        value-format="YYYY-MM-DD">
-        </el-date-picker>
+      <el-form-item label="日期" prop="date">
+        <el-input autocomplete="off"
+                  :rows="4"
+                  type="textarea"
+                  style="margin-top: 10px"
+                  v-model="newForum.date"></el-input>
       </el-form-item>
-
-      <el-form-item label="文件" prop="image">
-        <big-file ref="uploadComp"
-                  v-model:image="uploadFile.image"
-                  v-bind:category="'00000402'"
-                  v-bind:file-type='["jpg", "jpeg", "png","mp4"]'/>
-      </el-form-item>
-
       <el-form-item label="文案" prop="text">
         <el-input autocomplete="off"
                   :rows="4"
                   type="textarea"
                   style="margin-top: 10px"
-                  v-model="uploadFile.text"></el-input>
+                  v-model="newForum.text"></el-input>
       </el-form-item>
 
     </el-form>
@@ -52,11 +43,6 @@
   <el-table :data="tableData" stripe border>
     <el-table-column label="id" prop="id" width="90px" align="center"/>
     <el-table-column label="日期" prop="date" width="100px" align="center"/>
-    <el-table-column label="图片" width="120px" align="center" prop="image">
-      <template v-slot="scope">
-        <img :src="scope.row.image" width="100" height="70" align="center"/>
-      </template>
-    </el-table-column>
     <el-table-column label="文案" prop="text" width="400px" align="center"/>
     <el-table-column label="操作" prop="operation" align="center">
       <template v-slot="scope">
@@ -66,7 +52,7 @@
         <el-popconfirm
               confirm-button-text="确定"
               cancel-button-text="取消"
-              title="确认删除该条图文？"
+              title="确认删除该条报告？"
               @confirm="deleteFile(scope.row)"
         >
           <template #reference>
@@ -82,7 +68,7 @@
   </el-table>
 
   <!--编辑时弹出的模态框-->
-  <el-dialog v-model="editFormVisible" title="编辑">
+  <el-dialog v-model="editFormVisible" title="编辑学术报告">
 
     <el-form :data="formData">
       <el-form-item label="id" prop="id" style="margin-top: 10px; vertical-align: middle">
@@ -94,27 +80,22 @@
         ></el-input>
       </el-form-item>
       <el-form-item label="日期" prop="date" style="margin-top: 10px; vertical-align: middle">
-          <el-date-picker v-model="formData.date"
-                          type="date"
-                          placeholder="选择日期"
-                          format="YYYY/MM/DD"
-                          value-format="YYYY-MM-DD">
-          </el-date-picker>
-      </el-form-item>
-
-      <el-form-item label="文件" prop="image">
-        <big-file ref="uploadComp"
-                  v-model:image="formData.image"
-                  v-bind:category="'00000402'"
-                  v-bind:file-type='["jpg", "jpeg", "png"]'/>
+        <el-input autocomplete="off"
+                  :rows="1"
+                  type="text"
+                  disabled
+                  v-model="formData.date"
+        ></el-input>
       </el-form-item>
       <el-form-item label="文案" prop="text" style="margin-top: 10px; vertical-align: middle">
         <el-input autocomplete="off"
                   :rows="1"
                   type="text"
+                  disabled
                   v-model="formData.text"
         ></el-input>
       </el-form-item>
+
     </el-form>
     <template #footer>
             <span class="dialog-footer">
@@ -137,7 +118,6 @@
         @next-click="handleNext"
   >
   </el-pagination>
-
 </template>
 
 <script lang="ts">
@@ -150,21 +130,18 @@
   declare let SessionStorage: any;
 
   export default defineComponent({
-    name: "academic_seminar",
-    components: {
+    name: "academic_report",
+    components:{
       BigFile
     },
 
-
     setup: function () {
-      const showData = ref();//定义展示的数据
-      showData.value = [];
 
       const param = ref();
       param.value = {};
       const pagination = reactive({
         page: 1,
-        size: 6,
+        size: 8,
         total: 0
       });
 
@@ -174,9 +151,10 @@
       const addFormVisible = ref(false);
       const editFormVisible = ref(false);
 
-      // 显示全部轮播图文
-      const ListAllSlide = (params: any) => {
-        axios.post("http://127.0.0.1:9000/business/admin/academic-seminar/list", {
+
+      // 显示全部论坛
+      const ListAllForum = (params: any) => {
+        axios.post("http://127.0.0.1:9000/business/admin/intro-activity-Forum/list", {
           page: params.page,
           size: params.size,
         }).then((response) => {
@@ -196,41 +174,37 @@
       //表格点击页码时触发
       const handleCurrentChange = (clickPage: any) => {
         console.log("此次点击的页码是：" + clickPage);
-        ListAllSlide({
+        ListAllForum({
           page: clickPage,
-          size: 6
+          size: 8
         });
       };
 
-      //新增轮播图文，打开模态框表单
+      //新增论坛，打开模态框表单
       const add = () => {
         addFormVisible.value = true;
       }
-      const uploadFile = reactive({
-        date:'',
-        image: '',
+      const newForum = reactive({
+        date: '',
         text: '',
         category: '00000402',
       });
-      //保存新增
+      //保存新增论坛
       const saveFile = () => {
-        console.log(uploadFile);
-        axios.post('http://127.0.0.1:9000/business/admin/academic-seminar/save', {
-          date:uploadFile.date,
-          image: uploadFile.image,
-          text: uploadFile.text,
-          category: uploadFile.category
+        console.log(newForum);
+        axios.post('http://127.0.0.1:9000/business/admin/intro-activity-Forum/save', {
+          date: newForum.date,
+          text: newForum.text,
+          category: newForum.category
         }).then((response) => {
           const data = response.data;
           if (data.success) {
-            ElMessage.success("新增成功！")
-            uploadFile.date='';
-            uploadFile.image = '';
-            uploadFile.category = '';
-            uploadFile.text = '';
-            clearImage();
+            ElMessage.success("新增论坛成功！")
+            newForum.date = '';
+            newForum.text = '';
+            newForum.category = '';
             addFormVisible.value = false;
-            ListAllSlide({
+            ListAllForum({
               page: pagination.page,
               size: pagination.size,
             });
@@ -239,44 +213,33 @@
           }
         });
       };
-      //保存后清除上传图片框中的图片
-      const uploadComp = ref();
-      const clearImage = () => {
-        uploadComp.value.clearFiles();
-      }
-
 
       const formData = reactive({
         id: '',
         date: '',
-        image: '',
         text: ''
       });//定义表单数据
       //编辑，打开表单，表单赋值
       const edit = (row: any) => {
         formData.id = row.id;
         formData.date = row.date;
-        formData.image = row.image;
         formData.text = row.text;
         editFormVisible.value = true;
       };
       //保存编辑
       const saveEdit = () => {
-        axios.post('http://127.0.0.1:9000/business/admin/academic-seminar/save', {
+        axios.post('http://127.0.0.1:9000/business/admin/intro-activity-Forum/save', {
           id: formData.id,
-          date:formData.date,
-          image: formData.image,
+          date: formData.date,
           text: formData.text
         }).then((response) => {
           const data = response.data;
           if (data.success) {
-            ElMessage.success("更新轮播图文成功！")
-            formData.date='';
-            formData.image = '';
+            ElMessage.success("更新论坛成功！")
+            formData.date = '';
             formData.text = '';
-            clearImage();
             editFormVisible.value = false;
-            ListAllSlide({
+            ListAllForum({
               page: pagination.page,
               size: pagination.size,
             });
@@ -286,13 +249,13 @@
         });
       }
 
-      //删除轮播图文
+      //删除论坛
       const deleteFile = (row: any) => {
-        axios.get('http://127.0.0.1:9000/business/admin/academic-seminar/delete/' + row.id).then((response) => {
+        axios.get('http://127.0.0.1:9000/business/admin/intro-activity-Forum/delete/' + row.id).then((response) => {
           const data = response.data;
           if (data.success) {
             ElMessage.success("删除成功！")
-            ListAllSlide({
+            ListAllForum({
               page: pagination.page,
               size: pagination.size,
             });
@@ -305,52 +268,56 @@
 
       //跳转到活动详情
       const jumpToDetail = (row: any) => {
-        SessionStorage.set("slideId", row.id);
-        router.push("/detail/seminar/detail");
+        SessionStorage.set("ForumId", row.id);
+        router.push("/detail/forum/detail");
         console.log("跳转详情，id：" + row.id);
       }
 
       onMounted(() => {
-        ListAllSlide({
+        ListAllForum({
           page: pagination.page,
           size: pagination.size
         });
       });
 
       return {
-        showData,
         tableData,
-        ListAllSlide,
+        ListAllForum,
         add,
         addFormVisible,
         editFormVisible,
         edit,
         deleteFile,
         saveFile,
-        uploadFile,
+        newForum,
         formData,
         saveEdit,
         pagination,
         handleCurrentChange,
-        uploadComp,
         jumpToDetail
       }
     }
-
-  });
+  })
 </script>
+
 
 <style scoped>
   h3 {
     font-family: Tahoma;
   }
 
-  .title {
+  .intro-activity-row {
     font-family: Tahoma;
     font-weight: bold;
     font-size: 14px;
     color: black;
     text-shadow: 3px 3px 3px #bdc2ff;
+  }
+
+  .normal-button {
+    background-color: rgba(212, 212, 255, 0.4);
+    border-color: #868EFF;
+    color: #757dff;
   }
 
   .add {
@@ -365,12 +332,6 @@
     border-color: #868EFF;
     margin-left: 80%;
     margin-bottom: 10px;
-  }
-
-  .normal-button {
-    background-color: rgba(212, 212, 255, 0.4);
-    border-color: #868EFF;
-    color: #757dff;
   }
 
 </style>

@@ -1,11 +1,11 @@
 <template>
-  <p class="academic-study-abroad-title" style="margin-bottom: 20px">留学申请文案编辑</p>
+  <p class="intro-activity-title" style="margin-bottom: 20px">学术报告——报告文案编辑</p>
 
-  <div id="academic-study-abroad-allSlides" class="demo-collapse">
+  <div id="intro-activity-allSlides" class="demo-collapse">
     <el-collapse accordion>
       <el-collapse-item>
         <template #title>
-          <span class="academic-study-abroad-title">显示全部图片视频文件</span>
+          <span class="intro-activity-title">显示全部图片视频文件</span>
         </template>
 
         <div>
@@ -22,7 +22,7 @@
             <el-form-item label="文件" prop="image">
               <big-file ref="uploadComp"
                         v-model:image="uploadFile.image"
-                        v-bind:category="'00000404'"
+                        v-bind:category="'00000402'"
                         v-bind:file-type='["jpg", "jpeg", "png","mp4"]'/>
             </el-form-item>
 
@@ -91,7 +91,7 @@
   declare let SessionStorage: any;
 
   export default defineComponent({
-    name: "forum_detail",
+    name: "detail_report",
     components: {
       bigFile
     },
@@ -111,7 +111,7 @@
       });
       //保存新增文件
       const saveFile = () => {
-        axios.post('http://127.0.0.1:9000/business/admin/academic-study-abroad-file/save', {
+        axios.post('http://127.0.0.1:9000/business/admin/intro-activity-file/save', {
           slideId: slide_id.value,
           url: uploadFile.image,
         }).then((response) => {
@@ -138,7 +138,7 @@
 
       // 显示全部文件
       const ListAllFile = (slideId: any) => {
-        axios.get("http://127.0.0.1:9000/business/admin/academic-study-abroad-file/list/" + slideId).then((response) => {
+        axios.get("http://127.0.0.1:9000/business/admin/intro-activity-file/list/" + slideId).then((response) => {
           const data = response.data;
           //读取数据
           if (data.success) {
@@ -158,7 +158,7 @@
 
       //删除文件
       const deleteFile = (row: any) => {
-        axios.get('http://127.0.0.1:9000/business/admin/academic-study-abroad-file/delete/' + row.id).then((response) => {
+        axios.get('http://127.0.0.1:9000/business/admin/intro-activity-file/delete/' + row.id).then((response) => {
           const data = response.data;
           if (data.success) {
             ElMessage.success("删除成功！")
@@ -178,7 +178,7 @@
 
       //查询文章内容
       const showContent = (slideId: any) => {
-        axios.get('http://127.0.0.1:9000/business/admin/academic-study-abroad-content/show/' + slideId).then((response) => {
+        axios.get('http://127.0.0.1:9000/business/admin/intro-activity-content/show/' + slideId).then((response) => {
           const data = response.data;
           if (data.success) {
             editor.txt.html(data.content);
@@ -189,7 +189,7 @@
       //保存文章内容
       const saveContent = () => {
         doc.value.content = editor.txt.html();
-        axios.post('http://127.0.0.1:9000/business/admin/academic-study-abroad-content/save', {
+        axios.post('http://127.0.0.1:9000/business/admin/intro-activity-content/save', {
           id: slide_id.value,
           content: doc.value.content
         }).then((response) => {
@@ -207,7 +207,7 @@
         let slideId = ref();
         slideId.value = SessionStorage.get("slideId") || {};
         if (Tool.isEmpty(slideId.value)) {
-          router.push("/home/academic/study-abroad")
+          router.push("/home/academic/report")
         }
         slide_id.value = slideId.value;
         ListAllFile(slideId.value);
@@ -231,7 +231,7 @@
 </script>
 
 <style scoped>
-  .academic-study-abroad-title {
+  .intro-activity-title {
     font-family: Tahoma;
     font-weight: bold;
     font-size: 14px;
@@ -250,7 +250,7 @@
     margin-bottom: 20px
   }
 
-  #academic-study-abroad-allSlides {
+  #intro-activity-allSlides {
     margin-top: 20px;
     margin-bottom: 20px;
   }

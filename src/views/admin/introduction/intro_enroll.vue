@@ -142,7 +142,7 @@
         address: '',
         hint: ''
       });//定义表单数据
-      //编辑轮播图文，打开表单，表单赋值
+      //编辑，打开表单，表单赋值
       const edit = () => {
         formData.phone = tableData.value.phone;
         formData.email = tableData.value.email;

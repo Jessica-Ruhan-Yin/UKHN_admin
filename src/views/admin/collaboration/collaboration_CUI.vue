@@ -1,6 +1,6 @@
 <template>
-  <h3>学术交流资源更新——研讨会</h3>
-  <p class="title">研讨会目录</p>
+  <h3>产业合作资源更新——中英、中爱企业合作</h3>
+  <p class="title">中英、中爱企业合作资源</p>
 
   <el-button class="fresh"
              @click="ListShowSlide"
@@ -12,7 +12,7 @@
   >新增
   </el-button>
   <!--新增时的弹出框表单-->
-  <el-dialog v-model="addFormVisible" title="新增研讨会">
+  <el-dialog v-model="addFormVisible" title="新增中英、中爱企业合作">
     <el-form v-model="uploadFile">
 
       <el-form-item label="日期" prop="date" style="margin-top: 10px; vertical-align: middle">
@@ -27,7 +27,7 @@
       <el-form-item label="文件" prop="image">
         <big-file ref="uploadComp"
                   v-model:image="uploadFile.image"
-                  v-bind:category="'00000402'"
+                  v-bind:category="'00000303'"
                   v-bind:file-type='["jpg", "jpeg", "png","mp4"]'/>
       </el-form-item>
 
@@ -105,7 +105,7 @@
       <el-form-item label="文件" prop="image">
         <big-file ref="uploadComp"
                   v-model:image="formData.image"
-                  v-bind:category="'00000402'"
+                  v-bind:category="'00000303'"
                   v-bind:file-type='["jpg", "jpeg", "png"]'/>
       </el-form-item>
       <el-form-item label="文案" prop="text" style="margin-top: 10px; vertical-align: middle">
@@ -150,7 +150,7 @@
   declare let SessionStorage: any;
 
   export default defineComponent({
-    name: "academic_seminar",
+    name: "collaboration_CUI",
     components: {
       BigFile
     },
@@ -176,7 +176,7 @@
 
       // 显示全部轮播图文
       const ListAllSlide = (params: any) => {
-        axios.post("http://127.0.0.1:9000/business/admin/academic-seminar/list", {
+        axios.post("http://127.0.0.1:9000/business/admin/collaboration-CUI/list", {
           page: params.page,
           size: params.size,
         }).then((response) => {
@@ -210,12 +210,12 @@
         date:'',
         image: '',
         text: '',
-        category: '00000402',
+        category: '00000303',
       });
       //保存新增
       const saveFile = () => {
         console.log(uploadFile);
-        axios.post('http://127.0.0.1:9000/business/admin/academic-seminar/save', {
+        axios.post('http://127.0.0.1:9000/business/admin/collaboration-CUI/save', {
           date:uploadFile.date,
           image: uploadFile.image,
           text: uploadFile.text,
@@ -252,7 +252,7 @@
         image: '',
         text: ''
       });//定义表单数据
-      //编辑，打开表单，表单赋值
+      //编辑轮播图文，打开表单，表单赋值
       const edit = (row: any) => {
         formData.id = row.id;
         formData.date = row.date;
@@ -262,7 +262,7 @@
       };
       //保存编辑
       const saveEdit = () => {
-        axios.post('http://127.0.0.1:9000/business/admin/academic-seminar/save', {
+        axios.post('http://127.0.0.1:9000/business/admin/collaboration-CUI/save', {
           id: formData.id,
           date:formData.date,
           image: formData.image,
@@ -288,7 +288,7 @@
 
       //删除轮播图文
       const deleteFile = (row: any) => {
-        axios.get('http://127.0.0.1:9000/business/admin/academic-seminar/delete/' + row.id).then((response) => {
+        axios.get('http://127.0.0.1:9000/business/admin/collaboration-CUI/delete/' + row.id).then((response) => {
           const data = response.data;
           if (data.success) {
             ElMessage.success("删除成功！")
@@ -306,7 +306,7 @@
       //跳转到活动详情
       const jumpToDetail = (row: any) => {
         SessionStorage.set("slideId", row.id);
-        router.push("/detail/seminar/detail");
+        router.push("/detail/CUI/detail");
         console.log("跳转详情，id：" + row.id);
       }
 

@@ -1,6 +1,6 @@
 <template>
   <h3>学术交流资源更新——留学申请</h3>
-  <p class="title">留学申请资源目录</p>
+  <p class="title">留学申请目录</p>
 
   <el-button class="fresh"
              @click="ListShowSlide"
@@ -72,7 +72,7 @@
   </el-table>
 
   <!--编辑时弹出的模态框-->
-  <el-dialog v-model="editFormVisible" title="编辑首页介绍部分轮播图文">
+  <el-dialog v-model="editFormVisible" title="编辑">
 
     <el-form :data="formData">
       <el-form-item label="id" prop="id" style="margin-top: 10px; vertical-align: middle">
@@ -191,7 +191,7 @@
         image: '',
         text: ''
       });//定义表单数据
-      //编辑轮播图文，打开表单，表单赋值
+      //编辑，打开表单，表单赋值
       const edit = (row: any) => {
         formData.id = row.id;
         formData.image = row.image;

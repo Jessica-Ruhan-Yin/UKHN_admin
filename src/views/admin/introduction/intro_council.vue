@@ -1,18 +1,11 @@
 <template>
   <h3>同乡会介绍资源更新——理事会成员</h3>
-  <p class="intro-activity-title">理事会成员资源更新</p>
+  <p class="intro-council-title">理事会成员资源更新</p>
 
   <!--编辑时弹出的模态框-->
   <el-dialog v-model="editFormVisible" title="编辑信息">
 
     <el-form :data="formData">
-      <el-form-item label="id" prop="id" style="margin-top: 10px; vertical-align: middle">
-        <el-input autocomplete="off"
-                  :rows="1"
-                  type="text"
-                  v-model="formData.id"
-        ></el-input>
-      </el-form-item>
       <el-form-item label="姓名" prop="name" style="margin-top: 10px; vertical-align: middle">
         <el-input autocomplete="off"
                   :rows="1"
@@ -43,27 +36,19 @@
         ></el-input>
       </el-form-item>
 
-      <el-form-item label="详情" prop="details" style="margin-top: 10px; vertical-align: middle">
+      <el-form-item label="邮箱" prop="email">
         <el-input autocomplete="off"
                   :rows="1"
                   type="text"
+                  v-model="formData.email"
+        ></el-input>
+      </el-form-item>
+
+      <el-form-item label="详情" prop="details">
+        <el-input autocomplete="off"
+                  :rows="10"
+                  type="textarea"
                   v-model="formData.details"
-        ></el-input>
-      </el-form-item>
-
-      <el-form-item label="地址" prop="address">
-        <el-input autocomplete="off"
-                  :rows="1"
-                  type="text"
-                  v-model="formData.address"
-        ></el-input>
-      </el-form-item>
-
-      <el-form-item label="信息" prop="hint">
-        <el-input autocomplete="off"
-                  :rows="1"
-                  type="text"
-                  v-model="formData.hint"
         ></el-input>
       </el-form-item>
 
@@ -87,7 +72,7 @@
       </template>
     </el-table-column>
     <el-table-column label="简介" prop="introduction" width="200px" align="center"/>
-    <el-table-column label="邮箱" prop="email" width="150px" align="center"/>
+    <el-table-column label="邮箱" prop="email" width="120px" align="center"/>
     <el-table-column label="详情" prop="details" width="250px" align="center"/>
     <el-table-column label="操作" prop="operation" align="center">
       <template v-slot="scope">
@@ -118,11 +103,11 @@
       const editFormVisible = ref(false);
 
       const ListAllInfo = () => {
-        axios.get("http://127.0.0.1:9000/business/admin/intro-council/list").then((response) => {
+        axios.get("http://127.0.0.1:9000/business/admin/council-members/show").then((response) => {
           const data = response.data;
           //读取数据
           if (data.success) {
-            tableData.value = data.content[0]
+            tableData.value = data.content
           } else {
             ElMessage.error(data.message);
           }
@@ -136,9 +121,10 @@
         image: '',
         introduction: '',
         email: '',
-        details: ''
+        details: '',
+        category: ''
       });//定义表单数据
-      //编辑轮播图文，打开表单，表单赋值
+      //编辑，打开表单，表单赋值
       const edit = (row: any) => {
         formData.id = row.id;
         formData.name = row.name;
@@ -151,14 +137,15 @@
       };
       //保存编辑
       const saveEdit = () => {
-        axios.post('http://127.0.0.1:9000/business/admin/intro-enroll/save', {
+        axios.post('http://127.0.0.1:9000/business/admin/council-members/update', {
           id: formData.id,
           name: formData.name,
           application: formData.application,
           image: formData.image,
           introduction: formData.introduction,
           email: formData.email,
-          details: formData.details
+          details: formData.details,
+          category: '00000503'
         }).then((response) => {
           const data = response.data;
           if (data.success) {
@@ -188,7 +175,8 @@
         edit,
         saveEdit,
         editFormVisible,
-        formData
+        formData,
+        uploadComp
       }
     }
   })
@@ -199,24 +187,17 @@
     font-family: Tahoma;
   }
 
-  .intro-activity-title {
+  .intro-council-title {
     font-family: Tahoma;
     font-weight: bold;
     font-size: 14px;
     color: black;
     text-shadow: 3px 3px 3px #bdc2ff;
   }
-
-  .button {
-    color: #868EFF;
+  .normal-button {
+    background-color: rgba(212, 212, 255, 0.4);
     border-color: #868EFF;
-    margin-left: 80%;
-    margin-bottom: 10px;
-  }
-
-  .icon {
-    color: rgb(177, 179, 245);
-    vertical-align: middle
+    color: #757dff;
   }
 
 </style>

@@ -14,10 +14,9 @@
                 </el-icon>
                 <span>首页</span>
               </template>
-              <el-menu-item index="1-1">介绍</el-menu-item>
-              <el-menu-item index="1-2">广告</el-menu-item>
-              <el-menu-item index="1-3">同乡会活动</el-menu-item>
-              <el-menu-item index="1-4">合作机构</el-menu-item>
+              <el-menu-item index="1-1">广告</el-menu-item>
+              <el-menu-item index="1-2">同乡会活动</el-menu-item>
+              <el-menu-item index="1-3">合作机构</el-menu-item>
             </el-sub-menu>
             <el-sub-menu index="2">
               <template #title>
@@ -38,9 +37,15 @@
                 </el-icon>
                 <span>产业合作</span>
               </template>
-              <el-menu-item index="3-1">国内企业合作</el-menu-item>
-              <el-menu-item index="3-2">英国及爱尔兰企业合作</el-menu-item>
-              <el-menu-item index="3-3">中英、中爱企业合作</el-menu-item>
+              <router-link class="link" to="/home/collaboration/China">
+                <el-menu-item index="3-1">国内企业合作</el-menu-item>
+              </router-link>
+              <router-link class="link" to="/home/collaboration/UK-Ireland">
+                <el-menu-item index="3-2">英国及爱尔兰企业合作</el-menu-item>
+              </router-link>
+              <router-link class="link" to="/home/collaboration/CUI">
+                <el-menu-item index="3-3">中英、中爱企业合作</el-menu-item>
+              </router-link>
             </el-sub-menu>
             <el-sub-menu index="4">
               <template #title>
@@ -49,10 +54,18 @@
                 </el-icon>
                 <span>学术交流</span>
               </template>
-              <el-menu-item index="4-1">学术论坛</el-menu-item>
-              <el-menu-item index="4-2">研讨会</el-menu-item>
-              <el-menu-item index="4-3">学术报告</el-menu-item>
-              <el-menu-item index="4-45">留学申请</el-menu-item>
+              <router-link class="link" to="/home/academic/forum">
+                <el-menu-item index="4-1">学术论坛</el-menu-item>
+              </router-link>
+              <router-link class="link" to="/home/academic/seminar">
+                <el-menu-item index="4-2">研讨会</el-menu-item>
+              </router-link>
+              <router-link class="link" to="/home/academic/report">
+                <el-menu-item index="4-3">学术报告</el-menu-item>
+              </router-link>
+              <router-link class="link" to="/home/academic/study-abroad">
+                <el-menu-item index="4-4">留学申请</el-menu-item>
+              </router-link>
             </el-sub-menu>
             <el-sub-menu index="5">
               <template #title>
