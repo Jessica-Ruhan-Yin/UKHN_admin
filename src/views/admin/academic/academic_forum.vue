@@ -15,12 +15,13 @@
   <el-dialog v-model="addFormVisible" title="新增学术论坛">
     <el-form v-model="newForum">
 
-      <el-form-item label="日期" prop="date">
-        <el-input autocomplete="off"
-                  :rows="4"
-                  type="textarea"
-                  style="margin-top: 10px"
-                  v-model="newForum.date"></el-input>
+      <el-form-item label="日期" prop="date" style="margin-top: 10px; vertical-align: middle">
+        <el-date-picker v-model="formData.date"
+                        type="date"
+                        placeholder="选择日期"
+                        format="YYYY/MM/DD"
+                        value-format="YYYY-MM-DD">
+        </el-date-picker>
       </el-form-item>
       <el-form-item label="文案" prop="text">
         <el-input autocomplete="off"
@@ -71,27 +72,19 @@
   <el-dialog v-model="editFormVisible" title="编辑学术论坛">
 
     <el-form :data="formData">
-      <el-form-item label="id" prop="id" style="margin-top: 10px; vertical-align: middle">
-        <el-input autocomplete="off"
-                  :rows="1"
-                  type="text"
-                  disabled
-                  v-model="formData.id"
-        ></el-input>
-      </el-form-item>
+
       <el-form-item label="日期" prop="date" style="margin-top: 10px; vertical-align: middle">
-        <el-input autocomplete="off"
-                  :rows="1"
-                  type="text"
-                  disabled
-                  v-model="formData.date"
-        ></el-input>
+        <el-date-picker v-model="formData.date"
+                        type="date"
+                        placeholder="选择日期"
+                        format="YYYY/MM/DD"
+                        value-format="YYYY-MM-DD">
+        </el-date-picker>
       </el-form-item>
       <el-form-item label="文案" prop="text" style="margin-top: 10px; vertical-align: middle">
         <el-input autocomplete="off"
                   :rows="1"
                   type="text"
-                  disabled
                   v-model="formData.text"
         ></el-input>
       </el-form-item>
@@ -269,7 +262,7 @@
       //跳转到活动详情
       const jumpToDetail = (row: any) => {
         SessionStorage.set("ForumId", row.id);
-        router.push("/detail/forum/detail");
+        router.push("/forum/detail");
         console.log("跳转详情，id：" + row.id);
       }
 

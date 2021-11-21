@@ -85,14 +85,6 @@
   <el-dialog v-model="editFormVisible" title="编辑">
 
     <el-form :data="formData">
-      <el-form-item label="id" prop="id" style="margin-top: 10px; vertical-align: middle">
-        <el-input autocomplete="off"
-                  :rows="1"
-                  type="text"
-                  disabled
-                  v-model="formData.id"
-        ></el-input>
-      </el-form-item>
       <el-form-item label="日期" prop="date" style="margin-top: 10px; vertical-align: middle">
           <el-date-picker v-model="formData.date"
                           type="date"
@@ -103,6 +95,9 @@
       </el-form-item>
 
       <el-form-item label="文件" prop="image">
+        <el-image style="width: 200px; object-fit: cover;"
+                  :src="formData.image"
+                  v-model:image="formData.image"/>
         <big-file ref="uploadComp"
                   v-model:image="formData.image"
                   v-bind:category="'00000402'"
@@ -306,7 +301,7 @@
       //跳转到活动详情
       const jumpToDetail = (row: any) => {
         SessionStorage.set("slideId", row.id);
-        router.push("/detail/seminar/detail");
+        router.push("/seminar/detail");
         console.log("跳转详情，id：" + row.id);
       }
 

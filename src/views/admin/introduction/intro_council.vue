@@ -22,6 +22,9 @@
       </el-form-item>
 
       <el-form-item label="头像" prop="image">
+        <el-image style="width: 200px; object-fit: cover;"
+                  :src="formData.image"
+                  v-model:image="formData.image"/>
         <big-file ref="uploadComp"
                   v-model:image="formData.image"
                   v-bind:category="'00000503'"

@@ -6,17 +6,14 @@
           :action="url"
           :file-list="fileList"
           auto-upload="true"
-          list-type="picture-card"
+          list-type="picture"
           :limit="1"
           :on-exceed="handleOnExceed"
           :before-upload="handleBeforeUpload"
           :on-success="handleImageSuccess"
           :on-preview="handlePictureCardPreview">
-      <el-icon>
-        <plus/>
-      </el-icon>
+      <el-button size="small" type="primary">点击上传文件</el-button>
     </el-upload>
-    <div slot="tip" class="el-upload__tip">请上传文件</div>
     <p v-show="imageUrl" id="url">图片地址为：{{imageUrl}}</p>
   </div>
 </template>

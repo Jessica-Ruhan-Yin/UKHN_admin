@@ -13,6 +13,7 @@ import AcademicStudyAbroad from '../views/admin/academic/academic_study_abroad.v
 import CollaborationChina from '../views/admin/collaboration/collaboration_China.vue'
 import CollaborationUKIreland from '../views/admin/collaboration/collaboration_UK_Ireland.vue'
 import CollaborationCUI from '../views/admin/collaboration/collaboration_CUI.vue'
+import HomePartners from '../views/admin/home/home_partners.vue'
 
 import ForumDetail from '../views/admin/academic/detail_forum.vue'
 import ReportDetail from '../views/admin/academic/detail_report.vue'
@@ -38,45 +39,49 @@ const routes: Array<RouteRecordRaw> = [
     component: Home,
     children: [
       {
-        path: '/home/intro/activity',
+        path: '/intro/activity',
         name: 'IntroActivity',
         component: IntroActivity,
       },{
-        path: '/home/intro/enroll',
+        path: '/intro/enroll',
         name: 'IntroEnroll',
         component: IntroEnroll,
       },{
-        path: '/home/intro/council',
+        path: '/intro/council',
         name: 'IntroCouncil',
         component: IntroCouncil,
       },{
-        path: '/home/academic/forum',
+        path: '/academic/forum',
         name: 'AcademicForum',
         component: AcademicForum,
       },{
-        path: '/home/academic/report',
+        path: '/academic/report',
         name: 'AcademicReport',
         component: AcademicReport,
       },{
-        path: '/home/academic/seminar',
+        path: '/academic/seminar',
         name: 'AcademicSeminar',
         component: AcademicSeminar,
       },{
-        path: '/home/academic/study-abroad',
+        path: '/academic/study-abroad',
         name: 'AcademicStudyAbroad',
         component: AcademicStudyAbroad,
       },{
-        path: '/home/collaboration/China',
+        path: '/collaboration/China',
         name: 'CollaborationChina',
         component: CollaborationChina,
       },{
-        path: '/home/collaboration/UK-Ireland',
+        path: '/collaboration/UK-Ireland',
         name: 'CollaborationUKIreland',
         component: CollaborationUKIreland,
       },{
-        path: '/home/collaboration/CUI',
+        path: '/collaboration/CUI',
         name: 'CollaborationCUI',
         component: CollaborationCUI,
+      },{
+        path: '/home/partners',
+        name: 'HomePartners',
+        component: HomePartners,
       },
     ]
   },
@@ -86,37 +91,37 @@ const routes: Array<RouteRecordRaw> = [
     component: Detail,
     children: [
       {
-        path: '/detail/activity/detail',
+        path: '/activity/detail',
         name: 'ActivityDetail',
         component: ActivityDetail,
       },
       {
-        path: '/detail/forum/detail',
+        path: '/forum/detail',
         name: 'ForumDetail',
         component: ForumDetail,
       },
       {
-        path: '/detail/report/detail',
+        path: '/report/detail',
         name: 'ReportDetail',
         component: ReportDetail,
       },{
-        path: '/detail/seminar/detail',
+        path: '/seminar/detail',
         name: 'SeminarDetail',
         component: SeminarDetail,
       },{
-        path: '/detail/study-abroad/detail',
+        path: '/study-abroad/detail',
         name: 'StudyAbroadDetail',
         component: StudyAbroadDetail,
       },{
-        path: '/detail/China/detail',
+        path: '/China/detail',
         name: 'ChinaDetail',
         component: ChinaDetail,
       },{
-        path: '/detail/UK-Ireland/detail',
+        path: '/UK-Ireland/detail',
         name: 'UKIrelandDetail',
         component: UKIrelandDetail,
       },{
-        path: '/detail/CUI/detail',
+        path: '/CUI/detail',
         name: 'CUIDetail',
         component: CUIDetail,
       },

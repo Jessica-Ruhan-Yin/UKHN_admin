@@ -1,6 +1,6 @@
 <template>
-  <h3>产业合作资源更新——中英、中爱企业合作</h3>
-  <p class="title">中英、中爱企业合作资源</p>
+  <h3>首页资源更新——合作机构</h3>
+  <p class="title">合作机构目录</p>
 
   <el-button class="fresh"
              @click="ListShowSlide"
@@ -12,31 +12,22 @@
   >新增
   </el-button>
   <!--新增时的弹出框表单-->
-  <el-dialog v-model="addFormVisible" title="新增中英、中爱企业合作">
+  <el-dialog v-model="addFormVisible" title="新增合作机构">
     <el-form v-model="uploadFile">
-
-      <el-form-item label="日期" prop="date" style="margin-top: 10px; vertical-align: middle">
-        <el-date-picker v-model="uploadFile.date"
-                        type="date"
-                        placeholder="选择日期"
-                        format="YYYY/MM/DD"
-                        value-format="YYYY-MM-DD">
-        </el-date-picker>
-      </el-form-item>
 
       <el-form-item label="文件" prop="image">
         <big-file ref="uploadComp"
                   v-model:image="uploadFile.image"
-                  v-bind:category="'00000303'"
+                  v-bind:category="'00000103'"
                   v-bind:file-type='["jpg", "jpeg", "png","mp4"]'/>
       </el-form-item>
 
-      <el-form-item label="文案" prop="text">
+      <el-form-item label="机构名称" prop="name">
         <el-input autocomplete="off"
                   :rows="4"
-                  type="textarea"
+                  type="text"
                   style="margin-top: 10px"
-                  v-model="uploadFile.text"></el-input>
+                  v-model="uploadFile.name"></el-input>
       </el-form-item>
 
     </el-form>
@@ -51,17 +42,15 @@
   <!--显示所有图文的表格-->
   <el-table :data="tableData" stripe border>
     <el-table-column label="id" prop="id" width="90px" align="center"/>
-    <el-table-column label="日期" prop="date" width="100px" align="center"/>
     <el-table-column label="图片" width="120px" align="center" prop="image">
       <template v-slot="scope">
         <img :src="scope.row.image" width="100" height="70" align="center"/>
       </template>
     </el-table-column>
-    <el-table-column label="文案" prop="text" width="400px" align="center"/>
+    <el-table-column label="机构名称" prop="name" width="400px" align="center"/>
     <el-table-column label="操作" prop="operation" align="center">
       <template v-slot="scope">
         <el-button size="mini" class="normal-button" @click="edit(scope.row)">编辑</el-button>
-        <el-button size="mini" class="normal-button" @click="jumpToDetail(scope.row)">详情</el-button>
 
         <el-popconfirm
               confirm-button-text="确定"
@@ -85,29 +74,21 @@
   <el-dialog v-model="editFormVisible" title="编辑">
 
     <el-form :data="formData">
-      <el-form-item label="日期" prop="date" style="margin-top: 10px; vertical-align: middle">
-          <el-date-picker v-model="formData.date"
-                          type="date"
-                          placeholder="选择日期"
-                          format="YYYY/MM/DD"
-                          value-format="YYYY-MM-DD">
-          </el-date-picker>
-      </el-form-item>
 
       <el-form-item label="文件" prop="image">
-        <el-image style="width: 200px; object-fit: cover;"
+        <el-image style="width: 200px; height: 200px"
                   :src="formData.image"
                   v-model:image="formData.image"/>
         <big-file ref="uploadComp"
                   v-model:image="formData.image"
-                  v-bind:category="'00000303'"
+                  v-bind:category="'00000103'"
                   v-bind:file-type='["jpg", "jpeg", "png"]'/>
       </el-form-item>
-      <el-form-item label="文案" prop="text" style="margin-top: 10px; vertical-align: middle">
+      <el-form-item label="机构名称" prop="name" style="margin-top: 10px; vertical-align: middle">
         <el-input autocomplete="off"
                   :rows="1"
                   type="text"
-                  v-model="formData.text"
+                  v-model="formData.name"
         ></el-input>
       </el-form-item>
     </el-form>
@@ -119,20 +100,6 @@
     </template>
   </el-dialog>
 
-  <!--分页组件-->
-  <el-pagination
-        id="pagination"
-        layout="prev, pager, next"
-        :pager-count="11"
-        v-model:current-page="pagination.current"
-        :page-size="pagination.size"
-        :total="pagination.total"
-        @current-change="handleCurrentChange"
-        @prev-click="handlePrev"
-        @next-click="handleNext"
-  >
-  </el-pagination>
-
 </template>
 
 <script lang="ts">
@@ -140,12 +107,9 @@
   import axios from "axios";
   import {ElMessage} from 'element-plus';
   import BigFile from '@/components/bigFile.vue';
-  import router from '@/router/index';
-
-  declare let SessionStorage: any;
 
   export default defineComponent({
-    name: "collaboration_CUI",
+    name: "home_partners",
     components: {
       BigFile
     },
@@ -155,14 +119,6 @@
       const showData = ref();//定义展示的数据
       showData.value = [];
 
-      const param = ref();
-      param.value = {};
-      const pagination = reactive({
-        page: 1,
-        size: 6,
-        total: 0
-      });
-
       const tableData = ref();//定义表格数据
       tableData.value = [];
 
@@ -170,65 +126,45 @@
       const editFormVisible = ref(false);
 
       // 显示全部轮播图文
-      const ListAllSlide = (params: any) => {
-        axios.post("http://127.0.0.1:9000/business/admin/collaboration-CUI/list", {
-          page: params.page,
-          size: params.size,
-        }).then((response) => {
+      const ListAllSlide = () => {
+        axios.get("http://127.0.0.1:9000/business/admin/home-partners/list").then((response) => {
           const data = response.data;
-          //重置分页按钮
-          pagination.total = parseInt(data.content.total)
-          pagination.page = params.page;
           //读取数据
           if (data.success) {
-            tableData.value = data.content.list
+            tableData.value = data.content
           } else {
             ElMessage.error(data.message);
           }
         });
       };
 
-      //表格点击页码时触发
-      const handleCurrentChange = (clickPage: any) => {
-        console.log("此次点击的页码是：" + clickPage);
-        ListAllSlide({
-          page: clickPage,
-          size: 6
-        });
-      };
 
       //新增轮播图文，打开模态框表单
       const add = () => {
         addFormVisible.value = true;
       }
       const uploadFile = reactive({
-        date:'',
         image: '',
-        text: '',
-        category: '00000303',
+        name: '',
+        category: '00000103',
       });
       //保存新增
       const saveFile = () => {
         console.log(uploadFile);
-        axios.post('http://127.0.0.1:9000/business/admin/collaboration-CUI/save', {
-          date:uploadFile.date,
+        axios.post('http://127.0.0.1:9000/business/admin/home-partners/save', {
           image: uploadFile.image,
-          text: uploadFile.text,
+          name: uploadFile.name,
           category: uploadFile.category
         }).then((response) => {
           const data = response.data;
           if (data.success) {
             ElMessage.success("新增成功！")
-            uploadFile.date='';
             uploadFile.image = '';
             uploadFile.category = '';
-            uploadFile.text = '';
+            uploadFile.name = '';
             clearImage();
             addFormVisible.value = false;
-            ListAllSlide({
-              page: pagination.page,
-              size: pagination.size,
-            });
+            ListAllSlide();
           } else {
             ElMessage.error(data.message);
           }
@@ -243,38 +179,31 @@
 
       const formData = reactive({
         id: '',
-        date: '',
         image: '',
-        text: ''
+        name: ''
       });//定义表单数据
-      //编辑轮播图文，打开表单，表单赋值
+      //编辑，打开表单，表单赋值
       const edit = (row: any) => {
         formData.id = row.id;
-        formData.date = row.date;
         formData.image = row.image;
-        formData.text = row.text;
+        formData.name = row.name;
         editFormVisible.value = true;
       };
       //保存编辑
       const saveEdit = () => {
-        axios.post('http://127.0.0.1:9000/business/admin/collaboration-CUI/save', {
+        axios.post('http://127.0.0.1:9000/business/admin/home-partners/save', {
           id: formData.id,
-          date:formData.date,
           image: formData.image,
-          text: formData.text
+          name: formData.name
         }).then((response) => {
           const data = response.data;
           if (data.success) {
-            ElMessage.success("更新轮播图文成功！")
-            formData.date='';
+            ElMessage.success("更新成功！")
             formData.image = '';
-            formData.text = '';
+            formData.name = '';
             clearImage();
             editFormVisible.value = false;
-            ListAllSlide({
-              page: pagination.page,
-              size: pagination.size,
-            });
+            ListAllSlide();
           } else {
             ElMessage.error(data.message);
           }
@@ -283,33 +212,19 @@
 
       //删除轮播图文
       const deleteFile = (row: any) => {
-        axios.get('http://127.0.0.1:9000/business/admin/collaboration-CUI/delete/' + row.id).then((response) => {
+        axios.get('http://127.0.0.1:9000/business/admin/home-partners/delete/' + row.id).then((response) => {
           const data = response.data;
           if (data.success) {
             ElMessage.success("删除成功！")
-            ListAllSlide({
-              page: pagination.page,
-              size: pagination.size,
-            });
+            ListAllSlide();
           } else {
             ElMessage.error("删除失败！")
           }
         })
       }
 
-
-      //跳转到活动详情
-      const jumpToDetail = (row: any) => {
-        SessionStorage.set("slideId", row.id);
-        router.push("/CUI/detail");
-        console.log("跳转详情，id：" + row.id);
-      }
-
       onMounted(() => {
-        ListAllSlide({
-          page: pagination.page,
-          size: pagination.size
-        });
+        ListAllSlide();
       });
 
       return {
@@ -325,10 +240,7 @@
         uploadFile,
         formData,
         saveEdit,
-        pagination,
-        handleCurrentChange,
-        uploadComp,
-        jumpToDetail
+        uploadComp
       }
     }
 

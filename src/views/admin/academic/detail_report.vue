@@ -207,7 +207,7 @@
         let slideId = ref();
         slideId.value = SessionStorage.get("slideId") || {};
         if (Tool.isEmpty(slideId.value)) {
-          router.push("/home/academic/report")
+          router.push("/academic/report")
         }
         slide_id.value = slideId.value;
         ListAllFile(slideId.value);

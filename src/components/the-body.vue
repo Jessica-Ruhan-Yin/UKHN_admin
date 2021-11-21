@@ -15,8 +15,12 @@
                 <span>首页</span>
               </template>
               <el-menu-item index="1-1">广告</el-menu-item>
-              <el-menu-item index="1-2">同乡会活动</el-menu-item>
-              <el-menu-item index="1-3">合作机构</el-menu-item>
+              <router-link class="link" to="/intro/activity">
+                <el-menu-item index="1-2">同乡会活动</el-menu-item>
+              </router-link>
+              <router-link class="link" to="/home/partners">
+                <el-menu-item index="1-3">合作机构</el-menu-item>
+              </router-link>
             </el-sub-menu>
             <el-sub-menu index="2">
               <template #title>
@@ -37,13 +41,13 @@
                 </el-icon>
                 <span>产业合作</span>
               </template>
-              <router-link class="link" to="/home/collaboration/China">
+              <router-link class="link" to="/collaboration/China">
                 <el-menu-item index="3-1">国内企业合作</el-menu-item>
               </router-link>
-              <router-link class="link" to="/home/collaboration/UK-Ireland">
+              <router-link class="link" to="/collaboration/UK-Ireland">
                 <el-menu-item index="3-2">英国及爱尔兰企业合作</el-menu-item>
               </router-link>
-              <router-link class="link" to="/home/collaboration/CUI">
+              <router-link class="link" to="/collaboration/CUI">
                 <el-menu-item index="3-3">中英、中爱企业合作</el-menu-item>
               </router-link>
             </el-sub-menu>
@@ -54,16 +58,16 @@
                 </el-icon>
                 <span>学术交流</span>
               </template>
-              <router-link class="link" to="/home/academic/forum">
+              <router-link class="link" to="/academic/forum">
                 <el-menu-item index="4-1">学术论坛</el-menu-item>
               </router-link>
-              <router-link class="link" to="/home/academic/seminar">
+              <router-link class="link" to="/academic/seminar">
                 <el-menu-item index="4-2">研讨会</el-menu-item>
               </router-link>
-              <router-link class="link" to="/home/academic/report">
+              <router-link class="link" to="/academic/report">
                 <el-menu-item index="4-3">学术报告</el-menu-item>
               </router-link>
-              <router-link class="link" to="/home/academic/study-abroad">
+              <router-link class="link" to="/academic/study-abroad">
                 <el-menu-item index="4-4">留学申请</el-menu-item>
               </router-link>
             </el-sub-menu>
@@ -74,13 +78,13 @@
                 </el-icon>
                 <span>同乡会介绍</span>
               </template>
-              <router-link class="link" to="/home/intro/activity">
+              <router-link class="link" to="/intro/activity">
                 <el-menu-item index="5-1">同乡会活动</el-menu-item>
               </router-link>
-              <router-link class="link" to="/home/intro/council">
+              <router-link class="link" to="/intro/council">
                 <el-menu-item index="5-2">理事会</el-menu-item>
               </router-link>
-              <router-link class="link" to="/home/intro/enroll">
+              <router-link class="link" to="/intro/enroll">
                 <el-menu-item index="5-3">招新</el-menu-item>
               </router-link>
             </el-sub-menu>
