@@ -19,21 +19,23 @@
 </template>
 
 <script lang="ts">
-  import {defineComponent, getCurrentInstance, onMounted, ref} from 'vue';
+  import {defineComponent, getCurrentInstance, ref} from 'vue';
   import {ElMessage} from 'element-plus';
   import {Plus} from '@element-plus/icons';
 
   export default defineComponent({
     name: "bigFile",
     components: {Plus},
-    props: ['image', 'category', 'limit', 'fileType'],
+    props: ['image', 'category', 'fileType'],
     emits: ['update:image'],
 
 
     setup(props, context) {
       let imageUrl = ref();
 
-      let cate = ref(props.category);
+      let category = ref(props.category);
+      let cate = ref();
+      cate.value = category.value;
       let url = ref();
       url.value = "http://127.0.0.1:9000/file/admin/oss-upload/" + cate.value;
 
@@ -76,7 +78,7 @@
 
       //上传图片成功回调
       const handleImageSuccess = (response: any) => {
-        console.log("图片地址：", response.content);
+        console.log("图片地址：", response.content.path);
         imageUrl.value = response.content.path;
         context.emit('update:image', imageUrl.value);
         imageUrl.value = '';

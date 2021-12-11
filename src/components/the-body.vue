@@ -29,10 +29,18 @@
                 </el-icon>
                 <span>自贸港专栏</span>
               </template>
-              <el-menu-item index="2-1">政策福利</el-menu-item>
-              <el-menu-item index="2-2">招商引资</el-menu-item>
-              <el-menu-item index="2-3">项目合作</el-menu-item>
-              <el-menu-item index="2-4">宣传推广</el-menu-item>
+              <router-link class="link" to="/trade/policy">
+                <el-menu-item index="2-1">政策福利</el-menu-item>
+              </router-link>
+              <router-link class="link" to="/trade/business">
+                <el-menu-item index="2-2">招商引资</el-menu-item>
+              </router-link>
+              <router-link class="link" to="/trade/project">
+                <el-menu-item index="2-3">项目合作</el-menu-item>
+              </router-link>
+              <router-link class="link" to="/trade/promotion">
+                <el-menu-item index="2-4">宣传推广</el-menu-item>
+              </router-link>
             </el-sub-menu>
             <el-sub-menu index="3">
               <template #title>

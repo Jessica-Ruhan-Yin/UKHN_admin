@@ -81,8 +81,8 @@
   }
 
   #logo {
-    width: 40px;
-    height: 40px;
+    width: 50px;
+    height: 50px;
     vertical-align: middle;
     margin-right: 10px;
   }
@@ -90,7 +90,7 @@
   #title {
     font-family: Tahoma;
     font-weight: bolder;
-    font-size: 16px;
+    font-size: 20px;
     display: inline-block;
     vertical-align: middle;
   }

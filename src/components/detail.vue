@@ -1,11 +1,11 @@
 <template>
-  <p class="collaboration-China-title" style="margin-bottom: 20px">国内企业合作文案编辑</p>
+  <p class="header-title" style="margin-bottom: 20px">{{menu}}编辑</p>
 
-  <div id="collaboration-China-allSlides" class="demo-collapse">
+  <div id="header-allSlides" class="demo-collapse">
     <el-collapse accordion>
       <el-collapse-item>
         <template #title>
-          <span class="collaboration-China-title">显示全部图片视频文件</span>
+          <span class="header-title">显示全部图片视频文件</span>
         </template>
 
         <div>
@@ -22,8 +22,8 @@
             <el-form-item label="文件" prop="image">
               <big-file ref="uploadComp"
                         v-model:image="uploadFile.image"
-                        v-bind:category="'00000301'"
-                        v-bind:file-type='["jpg", "jpeg", "png","mp4"]'/>
+                        v-bind:category=cate
+                        v-bind:file-type='["jpg", "jpeg", "png","gif","mp4"]'/>
             </el-form-item>
 
           </el-form>
@@ -40,7 +40,7 @@
         <el-table :data="tableData" stripe border id="table">
           <el-table-column label="id" prop="id" width="90px" align="center"/>
           <el-table-column label="url" prop="url" width="700px" align="center"/>
-          <el-table-column label="图片/视频" prop="image" width="120px" align="center" >
+          <el-table-column label="图片/视频" prop="image" width="120px" align="center">
             <template v-slot="scope">
               <img :src="scope.row.url" width="100" height="70" align="center"/>
             </template>
@@ -75,7 +75,17 @@
   <div>
     <div id="content"></div>
     <el-button class="normal-button" style="margin-top: 10px" @click="saveContent">保存</el-button>
-    <el-button type="danger" style="margin-top: 10px">取消</el-button>
+
+    <el-popconfirm
+          confirm-button-text="确定"
+          cancel-button-text="取消"
+          title="确认取消编辑？"
+          @confirm="cancel()"
+    >
+      <template #reference>
+        <el-button type="danger" style="margin-top: 10px">取消</el-button>
+      </template>
+    </el-popconfirm>
   </div>
 </template>
 
@@ -91,7 +101,7 @@
   declare let SessionStorage: any;
 
   export default defineComponent({
-    name: "detail_China",
+    name: "detail_activity",
     components: {
       bigFile
     },
@@ -99,6 +109,16 @@
     setup() {
 
       const slide_id = ref();
+      const menu = ref();
+      menu.value = SessionStorage.get("menu") || {};
+      const mapping = ref('');
+      mapping.value = SessionStorage.get("mapping") || {};
+      const category = ref();
+      category.value = SessionStorage.get("category") || {};
+
+      let url = mapping.value;
+      let cate = category.value;
+
 
       const addFormVisible = ref(false);
       //新增轮播图文，打开模态框表单
@@ -111,7 +131,7 @@
       });
       //保存新增文件
       const saveFile = () => {
-        axios.post('http://127.0.0.1:9000/business/admin/collaboration-China-file/save', {
+        axios.post('http://127.0.0.1:9000/business/admin/' + mapping.value + '-file/save', {
           slideId: slide_id.value,
           url: uploadFile.image,
         }).then((response) => {
@@ -138,7 +158,7 @@
 
       // 显示全部文件
       const ListAllFile = (slideId: any) => {
-        axios.get("http://127.0.0.1:9000/business/admin/collaboration-China-file/list/" + slideId).then((response) => {
+        axios.get('http://127.0.0.1:9000/business/admin/' + url + '-file/list/' + slideId).then((response) => {
           const data = response.data;
           //读取数据
           if (data.success) {
@@ -158,7 +178,8 @@
 
       //删除文件
       const deleteFile = (row: any) => {
-        axios.get('http://127.0.0.1:9000/business/admin/collaboration-China-file/delete/' + row.id).then((response) => {
+        console.log(row.id + "@@@")
+        axios.get('http://127.0.0.1:9000/business/admin/' + url + '-file/delete/' + row.id).then((response) => {
           const data = response.data;
           if (data.success) {
             ElMessage.success("删除成功！")
@@ -178,7 +199,7 @@
 
       //查询文章内容
       const showContent = (slideId: any) => {
-        axios.get('http://127.0.0.1:9000/business/admin/collaboration-China-content/show/' + slideId).then((response) => {
+        axios.get('http://127.0.0.1:9000/business/admin/' + url + '-content/show/' + slideId).then((response) => {
           const data = response.data;
           if (data.success) {
             editor.txt.html(data.content);
@@ -189,7 +210,7 @@
       //保存文章内容
       const saveContent = () => {
         doc.value.content = editor.txt.html();
-        axios.post('http://127.0.0.1:9000/business/admin/collaboration-China-content/save', {
+        axios.post('http://127.0.0.1:9000/business/admin/' + url + '-content/save', {
           id: slide_id.value,
           content: doc.value.content
         }).then((response) => {
@@ -202,12 +223,17 @@
         });
       }
 
+      //取消保存
+      const cancel = () => {
+        showContent(slide_id.value);
+      }
+
 
       onMounted(() => {
         let slideId = ref();
         slideId.value = SessionStorage.get("slideId") || {};
         if (Tool.isEmpty(slideId.value)) {
-          router.push("/collaboration/China")
+          router.push("/intro/activity")
         }
         slide_id.value = slideId.value;
         ListAllFile(slideId.value);
@@ -224,14 +250,17 @@
         tableData,
         ListAllFile,
         deleteFile,
-        saveContent
+        saveContent,
+        cancel,
+        menu,
+        cate
       }
     }
   });
 </script>
 
 <style scoped>
-  .collaboration-China-title {
+  .header-title {
     font-family: Tahoma;
     font-weight: bold;
     font-size: 14px;
@@ -250,7 +279,7 @@
     margin-bottom: 20px
   }
 
-  #collaboration-China-allSlides {
+  #header-allSlides {
     margin-top: 20px;
     margin-bottom: 20px;
   }

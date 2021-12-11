@@ -30,6 +30,13 @@
                   v-model="uploadFile.name"></el-input>
       </el-form-item>
 
+      <el-form-item label="链接" prop="url">
+        <el-input autocomplete="off"
+                  type="text"
+                  v-model="uploadFile.url"
+        ></el-input>
+      </el-form-item>
+
     </el-form>
     <template #footer>
             <span class="dialog-footer">
@@ -47,7 +54,8 @@
         <img :src="scope.row.image" width="100" height="70" align="center"/>
       </template>
     </el-table-column>
-    <el-table-column label="机构名称" prop="name" width="400px" align="center"/>
+    <el-table-column label="机构名称" prop="name" width="200px" align="center"/>
+    <el-table-column label="链接" prop="url" width="400px" align="center"/>
     <el-table-column label="操作" prop="operation" align="center">
       <template v-slot="scope">
         <el-button size="mini" class="normal-button" @click="edit(scope.row)">编辑</el-button>
@@ -91,6 +99,13 @@
                   v-model="formData.name"
         ></el-input>
       </el-form-item>
+      <el-form-item label="链接" prop="url" style="margin-top: 10px; vertical-align: middle">
+        <el-input autocomplete="off"
+                  :rows="1"
+                  type="text"
+                  v-model="formData.url"
+        ></el-input>
+      </el-form-item>
     </el-form>
     <template #footer>
             <span class="dialog-footer">
@@ -127,7 +142,7 @@
 
       // 显示全部轮播图文
       const ListAllSlide = () => {
-        axios.get("http://127.0.0.1:9000/business/admin/home-partners/list").then((response) => {
+        axios.get("http://4g31525s80.hsk.top/business/admin/home-partners/list").then((response) => {
           const data = response.data;
           //读取数据
           if (data.success) {
@@ -146,15 +161,17 @@
       const uploadFile = reactive({
         image: '',
         name: '',
+        url: '',
         category: '00000103',
       });
       //保存新增
       const saveFile = () => {
         console.log(uploadFile);
-        axios.post('http://127.0.0.1:9000/business/admin/home-partners/save', {
+        axios.post('http://4g31525s80.hsk.top/business/admin/home-partners/save', {
           image: uploadFile.image,
           name: uploadFile.name,
-          category: uploadFile.category
+          category: uploadFile.category,
+          url: uploadFile.url
         }).then((response) => {
           const data = response.data;
           if (data.success) {
@@ -162,6 +179,7 @@
             uploadFile.image = '';
             uploadFile.category = '';
             uploadFile.name = '';
+            uploadFile.url = '';
             clearImage();
             addFormVisible.value = false;
             ListAllSlide();
@@ -180,27 +198,28 @@
       const formData = reactive({
         id: '',
         image: '',
-        name: ''
+        name: '',
+        url: ''
       });//定义表单数据
       //编辑，打开表单，表单赋值
       const edit = (row: any) => {
         formData.id = row.id;
         formData.image = row.image;
         formData.name = row.name;
+        formData.url = row.url;
         editFormVisible.value = true;
       };
       //保存编辑
       const saveEdit = () => {
-        axios.post('http://127.0.0.1:9000/business/admin/home-partners/save', {
+        axios.post('http://4g31525s80.hsk.top/business/admin/home-partners/save', {
           id: formData.id,
           image: formData.image,
-          name: formData.name
+          name: formData.name,
+          url: formData.url,
         }).then((response) => {
           const data = response.data;
           if (data.success) {
             ElMessage.success("更新成功！")
-            formData.image = '';
-            formData.name = '';
             clearImage();
             editFormVisible.value = false;
             ListAllSlide();
@@ -212,7 +231,7 @@
 
       //删除轮播图文
       const deleteFile = (row: any) => {
-        axios.get('http://127.0.0.1:9000/business/admin/home-partners/delete/' + row.id).then((response) => {
+        axios.get('http://4g31525s80.hsk.top/business/admin/home-partners/delete/' + row.id).then((response) => {
           const data = response.data;
           if (data.success) {
             ElMessage.success("删除成功！")

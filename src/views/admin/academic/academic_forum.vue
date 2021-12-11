@@ -16,7 +16,7 @@
     <el-form v-model="newForum">
 
       <el-form-item label="日期" prop="date" style="margin-top: 10px; vertical-align: middle">
-        <el-date-picker v-model="formData.date"
+        <el-date-picker v-model="newForum.date"
                         type="date"
                         placeholder="选择日期"
                         format="YYYY/MM/DD"
@@ -29,6 +29,11 @@
                   type="textarea"
                   style="margin-top: 10px"
                   v-model="newForum.text"></el-input>
+      </el-form-item>
+
+      <el-form-item>
+        <el-radio v-model="form" label="url">添加链接</el-radio>
+        <el-radio v-model="form" label="content">编辑内容</el-radio>
       </el-form-item>
 
     </el-form>
@@ -45,10 +50,15 @@
     <el-table-column label="id" prop="id" width="90px" align="center"/>
     <el-table-column label="日期" prop="date" width="100px" align="center"/>
     <el-table-column label="文案" prop="text" width="400px" align="center"/>
-    <el-table-column label="操作" prop="operation" align="center">
+    <el-table-column label="操作" prop="form" align="center">
       <template v-slot="scope">
         <el-button size="mini" class="normal-button" @click="edit(scope.row)">编辑</el-button>
-        <el-button size="mini" class="normal-button" @click="jumpToDetail(scope.row)">详情</el-button>
+        <el-button v-show="scope.row.form==='content'" size="mini" class="normal-button"
+                   @click="jumpToDetail(scope.row)">详情
+        </el-button>
+        <el-button v-show="scope.row.form==='url'" size="mini" class="normal-button"
+                   @click="addUrl(scope.row)">链接
+        </el-button>
 
         <el-popconfirm
               confirm-button-text="确定"
@@ -67,6 +77,24 @@
       </template>
     </el-table-column>
   </el-table>
+
+  <!--新增链接模态框-->
+  <el-dialog v-model="addUrlVisible" title="新增学术论坛链接">
+    <el-form v-model="uploadUrl">
+      <el-form-item label="链接" prop="text">
+        <el-input autocomplete="off"
+                  type="text"
+                  style="margin-top: 10px"
+                  v-model="uploadUrl.url"></el-input>
+      </el-form-item>
+    </el-form>
+    <template #footer>
+            <span class="dialog-footer">
+              <el-button @click="addUrlVisible = false">取消</el-button>
+              <el-button type="primary" @click="saveUrl">保存</el-button>
+            </span>
+    </template>
+  </el-dialog>
 
   <!--编辑时弹出的模态框-->
   <el-dialog v-model="editFormVisible" title="编辑学术论坛">
@@ -87,6 +115,11 @@
                   type="text"
                   v-model="formData.text"
         ></el-input>
+      </el-form-item>
+
+      <el-form-item>
+        <el-radio v-model="formData.form" label="url">添加链接</el-radio>
+        <el-radio v-model="formData.form" label="content">编辑内容</el-radio>
       </el-form-item>
 
     </el-form>
@@ -143,11 +176,12 @@
 
       const addFormVisible = ref(false);
       const editFormVisible = ref(false);
+      const addUrlVisible = ref(false);
 
 
       // 显示全部论坛
       const ListAllForum = (params: any) => {
-        axios.post("http://127.0.0.1:9000/business/admin/academic-forum-Forum/list", {
+        axios.post("http://4g31525s80.hsk.top/business/admin/academic-forum/list", {
           page: params.page,
           size: params.size,
         }).then((response) => {
@@ -173,6 +207,8 @@
         });
       };
 
+      const form = ref('');
+
       //新增论坛，打开模态框表单
       const add = () => {
         addFormVisible.value = true;
@@ -185,10 +221,11 @@
       //保存新增论坛
       const saveFile = () => {
         console.log(newForum);
-        axios.post('http://127.0.0.1:9000/business/admin/academic-forum-Forum/save', {
+        axios.post('http://4g31525s80.hsk.top/business/admin/academic-forum/save', {
           date: newForum.date,
           text: newForum.text,
-          category: newForum.category
+          category: newForum.category,
+          form: form.value
         }).then((response) => {
           const data = response.data;
           if (data.success) {
@@ -210,27 +247,28 @@
       const formData = reactive({
         id: '',
         date: '',
-        text: ''
+        text: '',
+        form:''
       });//定义表单数据
       //编辑论坛，打开表单，表单赋值
       const edit = (row: any) => {
         formData.id = row.id;
         formData.date = row.date;
         formData.text = row.text;
+        formData.form = row.form;
         editFormVisible.value = true;
       };
       //保存编辑
       const saveEdit = () => {
-        axios.post('http://127.0.0.1:9000/business/admin/academic-forum-Forum/save', {
+        axios.post('http://4g31525s80.hsk.top/business/admin/academic-forum/save', {
           id: formData.id,
           date: formData.date,
-          text: formData.text
+          text: formData.text,
+          form:formData.form
         }).then((response) => {
           const data = response.data;
           if (data.success) {
             ElMessage.success("更新论坛成功！")
-            formData.date = '';
-            formData.text = '';
             editFormVisible.value = false;
             ListAllForum({
               page: pagination.page,
@@ -244,7 +282,7 @@
 
       //删除论坛
       const deleteFile = (row: any) => {
-        axios.get('http://127.0.0.1:9000/business/admin/academic-forum-Forum/delete/' + row.id).then((response) => {
+        axios.delete('http://4g31525s80.hsk.top/business/admin/academic-forum/delete/' + row.id).then((response) => {
           const data = response.data;
           if (data.success) {
             ElMessage.success("删除成功！")
@@ -256,13 +294,49 @@
             ElMessage.error("删除失败！")
           }
         })
-      }
+      };
+
+      const uploadUrl = reactive({
+        id: '',
+        url: ''
+      });
+      const addUrl = (row: any) => {
+        uploadUrl.id = row.id;
+        addUrlVisible.value = true;
+        axios.get('http://4g31525s80.hsk.top/business/admin/academic-forum-url/show/' + uploadUrl.id).then((response) => {
+          const data = response.data;
+          if (data.success) {
+            uploadUrl.url = data.content;
+          } else {
+            ElMessage.error(data.message);
+          }
+        });
+      };
+
+      //保存新增链接
+      const saveUrl = () => {
+        axios.post('http://4g31525s80.hsk.top/business/admin/academic-forum-url/save', {
+          id: uploadUrl.id,
+          url: uploadUrl.url
+        }).then((response) => {
+          const data = response.data;
+          if (data.success) {
+            ElMessage.success("保存链接成功！")
+            addUrlVisible.value = false;
+          } else {
+            ElMessage.error(data.message);
+          }
+        });
+      };
 
 
       //跳转到活动详情
       const jumpToDetail = (row: any) => {
-        SessionStorage.set("ForumId", row.id);
-        router.push("/forum/detail");
+        SessionStorage.set("slideId", row.id);
+        SessionStorage.set("menu","学术交流——学术论坛");
+        SessionStorage.set("mapping","academic-forum");
+        SessionStorage.set("category","00000401");
+        router.push("/content");
         console.log("跳转详情，id：" + row.id);
       }
 
@@ -287,7 +361,12 @@
         saveEdit,
         pagination,
         handleCurrentChange,
-        jumpToDetail
+        jumpToDetail,
+        form,
+        addUrlVisible,
+        addUrl,
+        saveUrl,
+        uploadUrl
       }
     }
   })
