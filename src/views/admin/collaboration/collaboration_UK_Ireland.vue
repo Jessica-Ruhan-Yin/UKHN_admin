@@ -31,6 +31,13 @@
                   v-bind:file-type='["jpg", "jpeg", "png","mp4"]'/>
       </el-form-item>
 
+      <el-form-item label="名称" prop="name">
+        <el-input autocomplete="off"
+                  type="text"
+                  style="margin-top: 10px"
+                  v-model="uploadFile.name"></el-input>
+      </el-form-item>
+
       <el-form-item label="文案" prop="text">
         <el-input autocomplete="off"
                   :rows="4"
@@ -62,7 +69,8 @@
         <img :src="scope.row.image" width="100" height="70" align="center"/>
       </template>
     </el-table-column>
-    <el-table-column label="文案" prop="text" width="400px" align="center"/>
+    <el-table-column label="名称" prop="name" width="150px" align="center"/>
+    <el-table-column label="文案" prop="text" width="250px" align="center"/>
     <el-table-column label="操作" prop="form" align="center">
       <template v-slot="scope">
         <el-button size="mini" class="normal-button" @click="edit(scope.row)">编辑</el-button>
@@ -131,10 +139,18 @@
                   v-bind:category="'00000302'"
                   v-bind:file-type='["jpg", "jpeg", "png"]'/>
       </el-form-item>
-      <el-form-item label="文案" prop="text" style="margin-top: 10px; vertical-align: middle">
+      <el-form-item label="名称" prop="text" style="margin-top: 10px; vertical-align: middle">
         <el-input autocomplete="off"
                   :rows="1"
                   type="text"
+                  v-model="formData.name"
+        ></el-input>
+      </el-form-item>
+
+      <el-form-item label="文案" prop="text" style="margin-top: 10px; vertical-align: middle">
+        <el-input autocomplete="off"
+                  :rows="4"
+                  type="textarea"
                   v-model="formData.text"
         ></el-input>
       </el-form-item>
@@ -240,6 +256,7 @@
       const uploadFile = reactive({
         date:'',
         image: '',
+        name: '',
         text: '',
         category: '00000302',
       });
@@ -249,6 +266,7 @@
         axios.post('http://4g31525s80.hsk.top/business/admin/collaboration-UK-Ireland/save', {
           date:uploadFile.date,
           image: uploadFile.image,
+          name:uploadFile.name,
           text: uploadFile.text,
           category: uploadFile.category,
           form:form.value
@@ -258,6 +276,7 @@
             ElMessage.success("新增成功！")
             uploadFile.date='';
             uploadFile.image = '';
+            uploadFile.name= '';
             uploadFile.category = '';
             uploadFile.text = '';
             clearImage();
@@ -282,6 +301,7 @@
         id: '',
         date: '',
         image: '',
+        name: '',
         text: '',
         form:''
       });//定义表单数据
@@ -290,7 +310,7 @@
         formData.id = row.id;
         formData.date = row.date;
         formData.image = row.image;
-        formData.text = row.text;
+        formData.name = row.name;
         formData.form = row.form;
         editFormVisible.value = true;
       };
@@ -300,6 +320,7 @@
           id: formData.id,
           date:formData.date,
           image: formData.image,
+          name:formData.name,
           text: formData.text,
           form: formData.form
         }).then((response) => {
