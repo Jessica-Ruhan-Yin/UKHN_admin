@@ -14,12 +14,17 @@
                 </el-icon>
                 <span>首页</span>
               </template>
-              <el-menu-item index="1-1">广告</el-menu-item>
+              <router-link class="link" to="/home/news">
+                <el-menu-item index="1-1">最新通告</el-menu-item>
+              </router-link>
+              <router-link class="link" to="/home/ad">
+                <el-menu-item index="1-2">广告</el-menu-item>
+              </router-link>
               <router-link class="link" to="/intro/activity">
-                <el-menu-item index="1-2">同乡会活动</el-menu-item>
+                <el-menu-item index="1-3">同乡会活动</el-menu-item>
               </router-link>
               <router-link class="link" to="/home/partners">
-                <el-menu-item index="1-3">合作机构</el-menu-item>
+                <el-menu-item index="1-4">合作机构</el-menu-item>
               </router-link>
             </el-sub-menu>
             <el-sub-menu index="2">

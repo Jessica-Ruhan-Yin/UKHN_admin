@@ -1,6 +1,6 @@
 <template>
-  <h3>同乡会介绍资源更新——同乡会活动</h3>
-  <p class="intro-activity-title">同乡会活动轮播显示</p>
+  <h3>首页资源更新——广告</h3>
+  <p class="home-ad-title">首页轮播——广告</p>
 
   <el-button class="fresh"
              @click="ListShowSlide"
@@ -12,7 +12,7 @@
   >新增
   </el-button>
   <!--新增时的弹出框表单-->
-  <el-dialog v-model="addFormVisible" title="新增同乡会介绍——同乡会活动部分轮播图文">
+  <el-dialog v-model="addFormVisible" title="新增广告">
     <el-form v-model="uploadFile">
 
       <el-form-item label="日期" prop="date" style="margin-top: 10px; vertical-align: middle">
@@ -27,7 +27,7 @@
       <el-form-item label="文件" prop="image">
         <big-file ref="uploadComp"
                   v-model:image="uploadFile.image"
-                  v-bind:category="'00000501'"
+                  v-bind:category="'00000102'"
                   v-bind:file-type='["jpg", "jpeg", "png","mp4"]'/>
       </el-form-item>
 
@@ -41,7 +41,7 @@
 
       <el-form-item label="文案" prop="text">
         <el-input autocomplete="off"
-                  :rows="6"
+                  :rows="2"
                   type="textarea"
                   style="margin-top: 10px"
                   v-model="uploadFile.text"></el-input>
@@ -71,7 +71,7 @@
       </template>
     </el-table-column>
     <el-table-column label="标题" prop="title" width="140px" align="center"/>
-    <el-table-column label="文案" prop="text" width="320px" align="center"/>
+    <el-table-column label="文案" prop="text" width="140px" align="center"/>
     <el-table-column label="操作" prop="form" align="center">
       <template v-slot="scope">
         <el-button size="mini" class="normal-button" @click="edit(scope.row)">编辑</el-button>
@@ -100,9 +100,9 @@
     </el-table-column>
   </el-table>
   <!--新增链接模态框-->
-  <el-dialog v-model="addUrlVisible" title="新增同乡会介绍——同乡会活动链接">
+  <el-dialog v-model="addUrlVisible" title="新增首页广告">
     <el-form v-model="uploadUrl">
-      <el-form-item label="链接" prop="text">
+      <el-form-item label="链接" prop="url">
         <el-input autocomplete="off"
                   type="text"
                   style="margin-top: 10px"
@@ -136,7 +136,7 @@
                   v-model:image="formData.image"/>
         <big-file ref="uploadComp"
                   v-model:image="formData.image"
-                  v-bind:category="'00000501'"
+                  v-bind:category="'00000102'"
                   v-bind:file-type='["jpg", "jpeg", "png"]'/>
       </el-form-item>
 
@@ -150,7 +150,7 @@
 
       <el-form-item label="文案" prop="text" style="margin-top: 10px; vertical-align: middle">
         <el-input autocomplete="off"
-                  :rows="6"
+                  :rows="2"
                   type="textarea"
                   v-model="formData.text"
         ></el-input>
@@ -196,7 +196,7 @@
   declare let SessionStorage: any;
 
   export default defineComponent({
-    name: "intro-activity",
+    name: "home-ad",
     components: {
       BigFile
     },
@@ -223,7 +223,7 @@
 
       // 显示展示的轮播图文
       const ListShowSlide = () => {
-        axios.post("http://4g31525s80.hsk.top/business/admin/intro-activity-slide/list", {
+        axios.post("http://4g31525s80.hsk.top/business/admin/home-ad/list", {
           page: "1",
           size: "6"
         }).then((response) => {
@@ -238,7 +238,7 @@
 
       // 显示全部轮播图文
       const ListAllSlide = (params: any) => {
-        axios.post("http://4g31525s80.hsk.top/business/admin/intro-activity-slide/list", {
+        axios.post("http://4g31525s80.hsk.top/business/admin/home-ad/list", {
           page: params.page,
           size: params.size,
         }).then((response) => {
@@ -274,14 +274,14 @@
         date:'',
         image: '',
         title:'',
-        text: '',
-        category: '00000501',
+        text:'',
+        category: '00000102',
       });
       //保存新增轮播图文
       const saveFile = () => {
         console.log(uploadFile);
         console.log(form.value)
-        axios.post('http://4g31525s80.hsk.top/business/admin/intro-activity-slide/save', {
+        axios.post('http://4g31525s80.hsk.top/business/admin/home-ad/save', {
           date: uploadFile.date,
           image: uploadFile.image,
           title: uploadFile.title,
@@ -295,8 +295,8 @@
             uploadFile.date = '';
             uploadFile.image = '';
             uploadFile.category = '';
-            uploadFile.text = '';
             uploadFile.title = '';
+            uploadFile.text = '';
             clearImage();
             addFormVisible.value = false;
             ListAllSlide({
@@ -321,7 +321,7 @@
         date: '',
         image: '',
         title:'',
-        text: '',
+        text:'',
         form:''
       });//定义表单数据
       //编辑轮播图文，打开表单，表单赋值
@@ -336,12 +336,12 @@
       };
       //保存编辑
       const saveEdit = () => {
-        axios.post('http://4g31525s80.hsk.top/business/admin/intro-activity-slide/save', {
+        axios.post('http://4g31525s80.hsk.top/business/admin/home-ad/save', {
           id: formData.id,
           date: formData.date,
           image: formData.image,
-          text: formData.text,
           title: formData.title,
+          text: formData.text,
           form:formData.form
         }).then((response) => {
           const data = response.data;
@@ -362,7 +362,7 @@
 
       //删除轮播图文
       const deleteFile = (row: any) => {
-        axios.get('http://4g31525s80.hsk.top/business/admin/intro-activity-slide/delete/' + row.id).then((response) => {
+        axios.get('http://4g31525s80.hsk.top/business/admin/home-ad/delete/' + row.id).then((response) => {
           const data = response.data;
           if (data.success) {
             ElMessage.success("删除成功！")
@@ -384,7 +384,7 @@
       const addUrl = (row: any) => {
         uploadUrl.id = row.id;
         addUrlVisible.value = true;
-        axios.get('http://4g31525s80.hsk.top/business/admin/intro-activity-url/show/' + uploadUrl.id).then((response) => {
+        axios.get('http://4g31525s80.hsk.top/business/admin/home-ad-url/show/' + uploadUrl.id).then((response) => {
           const data = response.data;
           if (data.success) {
             uploadUrl.url = data.content;
@@ -396,7 +396,7 @@
 
       //保存新增链接
       const saveUrl = () => {
-        axios.post('http://4g31525s80.hsk.top/business/admin/intro-activity-url/save', {
+        axios.post('http://4g31525s80.hsk.top/business/admin/home-ad-url/save', {
           id: uploadUrl.id,
           url: uploadUrl.url
         }).then((response) => {
@@ -414,9 +414,9 @@
       //跳转到活动详情
       const jumpToDetail = (row: any) => {
         SessionStorage.set("slideId", row.id);
-        SessionStorage.set("menu", "同乡会介绍——同乡会活动");
-        SessionStorage.set("mapping", "intro-activity");
-        SessionStorage.set("category", "00000501");
+        SessionStorage.set("menu", "首页——广告");
+        SessionStorage.set("mapping", "home-ad");
+        SessionStorage.set("category", "00000102");
         router.push("/content");
         console.log("跳转详情，id：" + row.id);
       }
@@ -463,7 +463,7 @@
     font-family: Tahoma;
   }
 
-  .intro-activity-title {
+  .home-ad-title {
     font-family: Tahoma;
     font-weight: bold;
     font-size: 14px;
@@ -477,7 +477,7 @@
     color: #757dff;
   }
 
-  #intro-activity-allSlides {
+  #home-ad-allSlides {
     margin-bottom: 20px;
     margin-top: 20px;
   }

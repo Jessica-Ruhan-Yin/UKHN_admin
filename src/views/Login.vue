@@ -76,7 +76,7 @@
           if (data.success) {
             ElMessage.success('登录成功！')
             store.commit("setUser", data.content)
-            window.open("/home","_self")
+            window.open("/home/news","_self")
           } else {
             ElMessage.error('用户名或密码错误！')
           }

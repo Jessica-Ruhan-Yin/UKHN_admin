@@ -1,6 +1,6 @@
 <template>
-  <h3>同乡会介绍资源更新——同乡会活动</h3>
-  <p class="intro-activity-title">同乡会活动轮播显示</p>
+  <h3>首页资源更新——通告</h3>
+  <p class="intro-activity-title">首页轮播——通告</p>
 
   <el-button class="fresh"
              @click="ListShowSlide"
@@ -12,7 +12,7 @@
   >新增
   </el-button>
   <!--新增时的弹出框表单-->
-  <el-dialog v-model="addFormVisible" title="新增同乡会介绍——同乡会活动部分轮播图文">
+  <el-dialog v-model="addFormVisible" title="新增通告">
     <el-form v-model="uploadFile">
 
       <el-form-item label="日期" prop="date" style="margin-top: 10px; vertical-align: middle">
@@ -27,7 +27,7 @@
       <el-form-item label="文件" prop="image">
         <big-file ref="uploadComp"
                   v-model:image="uploadFile.image"
-                  v-bind:category="'00000501'"
+                  v-bind:category="'00000101'"
                   v-bind:file-type='["jpg", "jpeg", "png","mp4"]'/>
       </el-form-item>
 
@@ -37,14 +37,6 @@
                   type="textarea"
                   style="margin-top: 10px"
                   v-model="uploadFile.title"></el-input>
-      </el-form-item>
-
-      <el-form-item label="文案" prop="text">
-        <el-input autocomplete="off"
-                  :rows="6"
-                  type="textarea"
-                  style="margin-top: 10px"
-                  v-model="uploadFile.text"></el-input>
       </el-form-item>
 
       <el-form-item>
@@ -70,8 +62,7 @@
         <img :src="scope.row.image" width="100" height="70" align="center"/>
       </template>
     </el-table-column>
-    <el-table-column label="标题" prop="title" width="140px" align="center"/>
-    <el-table-column label="文案" prop="text" width="320px" align="center"/>
+    <el-table-column label="标题" prop="title" width="420px" align="center"/>
     <el-table-column label="操作" prop="form" align="center">
       <template v-slot="scope">
         <el-button size="mini" class="normal-button" @click="edit(scope.row)">编辑</el-button>
@@ -100,9 +91,9 @@
     </el-table-column>
   </el-table>
   <!--新增链接模态框-->
-  <el-dialog v-model="addUrlVisible" title="新增同乡会介绍——同乡会活动链接">
+  <el-dialog v-model="addUrlVisible" title="新增首页通告">
     <el-form v-model="uploadUrl">
-      <el-form-item label="链接" prop="text">
+      <el-form-item label="链接" prop="url">
         <el-input autocomplete="off"
                   type="text"
                   style="margin-top: 10px"
@@ -136,7 +127,7 @@
                   v-model:image="formData.image"/>
         <big-file ref="uploadComp"
                   v-model:image="formData.image"
-                  v-bind:category="'00000501'"
+                  v-bind:category="'00000101'"
                   v-bind:file-type='["jpg", "jpeg", "png"]'/>
       </el-form-item>
 
@@ -145,14 +136,6 @@
                   :rows="2"
                   type="textarea"
                   v-model="formData.title"
-        ></el-input>
-      </el-form-item>
-
-      <el-form-item label="文案" prop="text" style="margin-top: 10px; vertical-align: middle">
-        <el-input autocomplete="off"
-                  :rows="6"
-                  type="textarea"
-                  v-model="formData.text"
         ></el-input>
       </el-form-item>
 
@@ -196,7 +179,7 @@
   declare let SessionStorage: any;
 
   export default defineComponent({
-    name: "intro-activity",
+    name: "home-news",
     components: {
       BigFile
     },
@@ -223,7 +206,7 @@
 
       // 显示展示的轮播图文
       const ListShowSlide = () => {
-        axios.post("http://4g31525s80.hsk.top/business/admin/intro-activity-slide/list", {
+        axios.post("http://4g31525s80.hsk.top/business/admin/home-news/list", {
           page: "1",
           size: "6"
         }).then((response) => {
@@ -238,7 +221,7 @@
 
       // 显示全部轮播图文
       const ListAllSlide = (params: any) => {
-        axios.post("http://4g31525s80.hsk.top/business/admin/intro-activity-slide/list", {
+        axios.post("http://4g31525s80.hsk.top/business/admin/home-news/list", {
           page: params.page,
           size: params.size,
         }).then((response) => {
@@ -274,18 +257,16 @@
         date:'',
         image: '',
         title:'',
-        text: '',
-        category: '00000501',
+        category: '00000101',
       });
       //保存新增轮播图文
       const saveFile = () => {
         console.log(uploadFile);
         console.log(form.value)
-        axios.post('http://4g31525s80.hsk.top/business/admin/intro-activity-slide/save', {
+        axios.post('http://4g31525s80.hsk.top/business/admin/home-news/save', {
           date: uploadFile.date,
           image: uploadFile.image,
           title: uploadFile.title,
-          text: uploadFile.text,
           category: uploadFile.category,
           form: form.value
         }).then((response) => {
@@ -295,7 +276,6 @@
             uploadFile.date = '';
             uploadFile.image = '';
             uploadFile.category = '';
-            uploadFile.text = '';
             uploadFile.title = '';
             clearImage();
             addFormVisible.value = false;
@@ -321,7 +301,6 @@
         date: '',
         image: '',
         title:'',
-        text: '',
         form:''
       });//定义表单数据
       //编辑轮播图文，打开表单，表单赋值
@@ -330,17 +309,15 @@
         formData.date = row.date;
         formData.image = row.image;
         formData.title = row.title;
-        formData.text = row.text;
         formData.form = row.form;
         editFormVisible.value = true;
       };
       //保存编辑
       const saveEdit = () => {
-        axios.post('http://4g31525s80.hsk.top/business/admin/intro-activity-slide/save', {
+        axios.post('http://4g31525s80.hsk.top/business/admin/home-news/save', {
           id: formData.id,
           date: formData.date,
           image: formData.image,
-          text: formData.text,
           title: formData.title,
           form:formData.form
         }).then((response) => {
@@ -362,7 +339,7 @@
 
       //删除轮播图文
       const deleteFile = (row: any) => {
-        axios.get('http://4g31525s80.hsk.top/business/admin/intro-activity-slide/delete/' + row.id).then((response) => {
+        axios.get('http://4g31525s80.hsk.top/business/admin/home-news/delete/' + row.id).then((response) => {
           const data = response.data;
           if (data.success) {
             ElMessage.success("删除成功！")
@@ -414,9 +391,9 @@
       //跳转到活动详情
       const jumpToDetail = (row: any) => {
         SessionStorage.set("slideId", row.id);
-        SessionStorage.set("menu", "同乡会介绍——同乡会活动");
-        SessionStorage.set("mapping", "intro-activity");
-        SessionStorage.set("category", "00000501");
+        SessionStorage.set("menu", "首页——通告");
+        SessionStorage.set("mapping", "home-news");
+        SessionStorage.set("category", "00000101");
         router.push("/content");
         console.log("跳转详情，id：" + row.id);
       }

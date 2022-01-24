@@ -14,7 +14,8 @@ import CollaborationChina from '../views/admin/collaboration/collaboration_China
 import CollaborationUKIreland from '../views/admin/collaboration/collaboration_UK_Ireland.vue'
 import CollaborationCUI from '../views/admin/collaboration/collaboration_CUI.vue'
 import HomePartners from '../views/admin/home/home_partners.vue'
-import HomeSlide from '../views/admin/home/home_slide.vue'
+import HomeNews from '../views/admin/home/home_news.vue'
+import HomeAd from '../views/admin/home/home_ad.vue'
 import TradeBusiness from '../views/admin/trade/trade_business.vue'
 import TradePolicy from '../views/admin/trade/trade_policy.vue'
 import TradeProject from '../views/admin/trade/trade_project.vue'
@@ -79,9 +80,13 @@ const routes: Array<RouteRecordRaw> = [
         name: 'HomePartners',
         component: HomePartners,
       }, {
-        path: '/home/slide',
-        name: 'HomeSlide',
-        component: HomeSlide,
+        path: '/home/news',
+        name: 'HomeNews',
+        component: HomeNews,
+      }, {
+        path: '/home/ad',
+        name: 'HomeAd',
+        component: HomeAd,
       }, {
         path: '/trade/business',
         name: 'TradeBusiness',
