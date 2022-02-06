@@ -45,7 +45,7 @@
 
       const logout = () => {
         console.log("退出登录开始");
-        axios.get('http://127.0.0.1:9000/system/admin/user/logout/' + user.value.token).then((response) => {
+        axios.get(process.env.VUE_APP_SERVER + '/system/admin/user/logout/' + user.value.token).then((response) => {
           const data = response.data;
           if (data.success) {
             ElMessage({

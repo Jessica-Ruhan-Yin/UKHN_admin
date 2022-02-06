@@ -37,7 +37,7 @@
       let cate = ref();
       cate.value = category.value;
       let url = ref();
-      url.value = "http://127.0.0.1:9000/file/admin/oss-upload/" + cate.value;
+      url.value = process.env.VUE_APP_SERVER + "/file/admin/oss-upload/" + cate.value;
 
       const {proxy}: any = getCurrentInstance()
 

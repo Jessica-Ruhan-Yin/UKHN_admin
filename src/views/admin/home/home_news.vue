@@ -3,7 +3,7 @@
   <p class="intro-activity-title">首页轮播——通告</p>
 
   <el-button class="fresh"
-             @click="ListShowSlide"
+             @click="ListAllSlide"
   >刷新
   </el-button>
 
@@ -204,24 +204,9 @@
       const editFormVisible = ref(false);
       const addUrlVisible = ref(false);
 
-      // 显示展示的轮播图文
-      const ListShowSlide = () => {
-        axios.post("http://4g31525s80.hsk.top/business/admin/home-news/list", {
-          page: "1",
-          size: "6"
-        }).then((response) => {
-          const data = response.data;
-          if (data.success) {
-            showData.value = data.content.list
-          } else {
-            ElMessage.error(data.message);
-          }
-        });
-      };
-
       // 显示全部轮播图文
       const ListAllSlide = (params: any) => {
-        axios.post("http://4g31525s80.hsk.top/business/admin/home-news/list", {
+        axios.post(process.env.VUE_APP_SERVER + "/business/admin/home-news/list", {
           page: params.page,
           size: params.size,
         }).then((response) => {
@@ -263,7 +248,7 @@
       const saveFile = () => {
         console.log(uploadFile);
         console.log(form.value)
-        axios.post('http://4g31525s80.hsk.top/business/admin/home-news/save', {
+        axios.post(process.env.VUE_APP_SERVER + '/business/admin/home-news/save', {
           date: uploadFile.date,
           image: uploadFile.image,
           title: uploadFile.title,
@@ -283,7 +268,6 @@
               page: pagination.page,
               size: pagination.size,
             });
-            ListShowSlide();
           } else {
             ElMessage.error(data.message);
           }
@@ -314,7 +298,7 @@
       };
       //保存编辑
       const saveEdit = () => {
-        axios.post('http://4g31525s80.hsk.top/business/admin/home-news/save', {
+        axios.post(process.env.VUE_APP_SERVER + '/business/admin/home-news/save', {
           id: formData.id,
           date: formData.date,
           image: formData.image,
@@ -330,7 +314,6 @@
               page: pagination.page,
               size: pagination.size,
             });
-            ListShowSlide();
           } else {
             ElMessage.error(data.message);
           }
@@ -339,7 +322,7 @@
 
       //删除轮播图文
       const deleteFile = (row: any) => {
-        axios.get('http://4g31525s80.hsk.top/business/admin/home-news/delete/' + row.id).then((response) => {
+        axios.get(process.env.VUE_APP_SERVER + '/business/admin/home-news/delete/' + row.id).then((response) => {
           const data = response.data;
           if (data.success) {
             ElMessage.success("删除成功！")
@@ -347,7 +330,6 @@
               page: pagination.page,
               size: pagination.size,
             });
-            ListShowSlide();
           } else {
             ElMessage.error("删除失败！")
           }
@@ -361,7 +343,7 @@
       const addUrl = (row: any) => {
         uploadUrl.id = row.id;
         addUrlVisible.value = true;
-        axios.get('http://4g31525s80.hsk.top/business/admin/intro-activity-url/show/' + uploadUrl.id).then((response) => {
+        axios.get(process.env.VUE_APP_SERVER + '/business/admin/intro-activity-url/show/' + uploadUrl.id).then((response) => {
           const data = response.data;
           if (data.success) {
             uploadUrl.url = data.content;
@@ -373,7 +355,7 @@
 
       //保存新增链接
       const saveUrl = () => {
-        axios.post('http://4g31525s80.hsk.top/business/admin/intro-activity-url/save', {
+        axios.post(process.env.VUE_APP_SERVER + '/business/admin/intro-activity-url/save', {
           id: uploadUrl.id,
           url: uploadUrl.url
         }).then((response) => {
@@ -399,7 +381,6 @@
       }
 
       onMounted(() => {
-        ListShowSlide();
         ListAllSlide({
           page: pagination.page,
           size: pagination.size
@@ -409,7 +390,6 @@
       return {
         showData,
         tableData,
-        ListShowSlide,
         ListAllSlide,
         add,
         addFormVisible,

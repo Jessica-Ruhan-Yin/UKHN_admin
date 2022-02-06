@@ -125,7 +125,7 @@
       const editFormVisible = ref(false);
 
       const ListAllInfo = () => {
-        axios.get("http://4g31525s80.hsk.top/business/admin/intro-enroll/list").then((response) => {
+        axios.get(process.env.VUE_APP_SERVER + "/business/admin/intro-enroll/list").then((response) => {
           const data = response.data;
           //读取数据
           if (data.success) {
@@ -152,7 +152,7 @@
       };
       //保存编辑
       const saveEdit = () => {
-        axios.post('http://4g31525s80.hsk.top/business/admin/intro-enroll/save', {
+        axios.post(process.env.VUE_APP_SERVER + '/business/admin/intro-enroll/save', {
           id:'00000001',
           phone: formData.phone,
           email: formData.email,

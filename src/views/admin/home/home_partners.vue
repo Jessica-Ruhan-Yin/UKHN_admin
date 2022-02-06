@@ -3,7 +3,7 @@
   <p class="title">合作机构目录</p>
 
   <el-button class="fresh"
-             @click="ListShowSlide"
+             @click="ListAllSlide"
   >刷新
   </el-button>
 
@@ -142,7 +142,7 @@
 
       // 显示全部轮播图文
       const ListAllSlide = () => {
-        axios.get("http://4g31525s80.hsk.top/business/admin/home-partners/list").then((response) => {
+        axios.get(process.env.VUE_APP_SERVER + "/business/admin/home-partners/list").then((response) => {
           const data = response.data;
           //读取数据
           if (data.success) {
@@ -167,7 +167,7 @@
       //保存新增
       const saveFile = () => {
         console.log(uploadFile);
-        axios.post('http://4g31525s80.hsk.top/business/admin/home-partners/save', {
+        axios.post(process.env.VUE_APP_SERVER + '/business/admin/home-partners/save', {
           image: uploadFile.image,
           name: uploadFile.name,
           category: uploadFile.category,
@@ -211,7 +211,7 @@
       };
       //保存编辑
       const saveEdit = () => {
-        axios.post('http://4g31525s80.hsk.top/business/admin/home-partners/save', {
+        axios.post(process.env.VUE_APP_SERVER + '/business/admin/home-partners/save', {
           id: formData.id,
           image: formData.image,
           name: formData.name,
@@ -231,7 +231,7 @@
 
       //删除轮播图文
       const deleteFile = (row: any) => {
-        axios.get('http://4g31525s80.hsk.top/business/admin/home-partners/delete/' + row.id).then((response) => {
+        axios.get(process.env.VUE_APP_SERVER + '/business/admin/home-partners/delete/' + row.id).then((response) => {
           const data = response.data;
           if (data.success) {
             ElMessage.success("删除成功！")

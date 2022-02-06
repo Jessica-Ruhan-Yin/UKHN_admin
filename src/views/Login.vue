@@ -71,7 +71,7 @@
       const login = () => {
         console.log("开始登录")
         loginUser.value.password = hexMd5(loginUser.value.password + KEY);
-        axios.post('http://127.0.0.1:9000/system/admin/user/login', loginUser.value).then((response) => {
+        axios.post(process.env.VUE_APP_SERVER + '/system/admin/user/login', loginUser.value).then((response) => {
           const data = response.data;
           if (data.success) {
             ElMessage.success('登录成功！')

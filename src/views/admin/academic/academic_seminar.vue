@@ -204,7 +204,7 @@
 
       // 显示全部轮播图文
       const ListAllSlide = (params: any) => {
-        axios.post("http://4g31525s80.hsk.top/business/admin/academic-seminar/list", {
+        axios.post(process.env.VUE_APP_SERVER + '/business/admin/academic-seminar/list', {
           page: params.page,
           size: params.size,
         }).then((response) => {
@@ -244,7 +244,7 @@
       //保存新增
       const saveFile = () => {
         console.log(uploadFile);
-        axios.post('http://4g31525s80.hsk.top/business/admin/academic-seminar/save', {
+        axios.post(process.env.VUE_APP_SERVER + '/business/admin/academic-seminar/save', {
           date:uploadFile.date,
           image: uploadFile.image,
           text: uploadFile.text,
@@ -294,7 +294,7 @@
       };
       //保存编辑
       const saveEdit = () => {
-        axios.post('http://4g31525s80.hsk.top/business/admin/academic-seminar/save', {
+        axios.post(process.env.VUE_APP_SERVER + '/business/admin/academic-seminar/save', {
           id: formData.id,
           date:formData.date,
           image: formData.image,
@@ -318,7 +318,7 @@
 
       //删除轮播图文
       const deleteFile = (row: any) => {
-        axios.get('http://4g31525s80.hsk.top/business/admin/academic-seminar/delete/' + row.id).then((response) => {
+        axios.get(process.env.VUE_APP_SERVER + '/business/admin/academic-seminar/delete/' + row.id).then((response) => {
           const data = response.data;
           if (data.success) {
             ElMessage.success("删除成功！")
@@ -339,7 +339,7 @@
       const addUrl = (row: any) => {
         uploadUrl.id = row.id;
         addUrlVisible.value = true;
-        axios.get('http://4g31525s80.hsk.top/business/admin/academic-seminar-url/show/' + uploadUrl.id).then((response) => {
+        axios.get(process.env.VUE_APP_SERVER + '/business/admin/academic-seminar-url/show/' + uploadUrl.id).then((response) => {
           const data = response.data;
           if (data.success) {
             uploadUrl.url = data.content;
@@ -351,7 +351,7 @@
 
       //保存新增链接
       const saveUrl = () => {
-        axios.post('http://4g31525s80.hsk.top/business/admin/academic-seminar-url/save', {
+        axios.post(process.env.VUE_APP_SERVER + '/business/admin/academic-seminar-url/save', {
           id: uploadUrl.id,
           url: uploadUrl.url
         }).then((response) => {

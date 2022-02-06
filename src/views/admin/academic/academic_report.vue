@@ -179,7 +179,7 @@
 
       // 显示全部论坛
       const ListAllReport = (params: any) => {
-        axios.post("http://4g31525s80.hsk.top/business/admin/academic-report/list", {
+        axios.post(process.env.VUE_APP_SERVER + '/business/admin/academic-report/list', {
           page: params.page,
           size: params.size,
         }).then((response) => {
@@ -218,7 +218,7 @@
       //保存新增论坛
       const saveFile = () => {
         console.log(newReport);
-        axios.post('http://4g31525s80.hsk.top/business/admin/academic-report/save', {
+        axios.post(process.env.VUE_APP_SERVER + '/business/admin/academic-report/save', {
           date: newReport.date,
           text: newReport.text,
           category: newReport.category,
@@ -257,7 +257,7 @@
       };
       //保存编辑
       const saveEdit = () => {
-        axios.post('http://4g31525s80.hsk.top/business/admin/academic-report/save', {
+        axios.post(process.env.VUE_APP_SERVER + '/business/admin/academic-report/save', {
           id: formData.id,
           date: formData.date,
           text: formData.text,
@@ -281,7 +281,7 @@
 
       //删除论坛
       const deleteFile = (row: any) => {
-        axios.delete('http://4g31525s80.hsk.top/business/admin/academic-report/delete/' + row.id).then((response) => {
+        axios.delete(process.env.VUE_APP_SERVER + '/business/admin/academic-report/delete/' + row.id).then((response) => {
           const data = response.data;
           if (data.success) {
             ElMessage.success("删除成功！")
@@ -302,7 +302,7 @@
       const addUrl = (row: any) => {
         uploadUrl.id = row.id;
         addUrlVisible.value = true;
-        axios.get('http://4g31525s80.hsk.top/business/admin/academic-report-url/show/' + uploadUrl.id).then((response) => {
+        axios.get(process.env.VUE_APP_SERVER + '/business/admin/academic-report-url/show/' + uploadUrl.id).then((response) => {
           const data = response.data;
           if (data.success) {
             uploadUrl.url = data.content;
@@ -314,7 +314,7 @@
 
       //保存新增链接
       const saveUrl = () => {
-        axios.post('http://4g31525s80.hsk.top/business/admin/academic-report-url/save', {
+        axios.post(process.env.VUE_APP_SERVER + '/business/admin/academic-report-url/save', {
           id: uploadUrl.id,
           url: uploadUrl.url
         }).then((response) => {

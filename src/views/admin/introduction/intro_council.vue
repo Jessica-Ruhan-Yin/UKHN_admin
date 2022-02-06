@@ -106,7 +106,7 @@
       const editFormVisible = ref(false);
 
       const ListAllInfo = () => {
-        axios.get("http://4g31525s80.hsk.top/business/admin/council-members/show").then((response) => {
+        axios.get(process.env.VUE_APP_SERVER + "/business/admin/council-members/show").then((response) => {
           const data = response.data;
           //读取数据
           if (data.success) {
@@ -140,7 +140,7 @@
       };
       //保存编辑
       const saveEdit = () => {
-        axios.post('http://4g31525s80.hsk.top/business/admin/council-members/update', {
+        axios.post(process.env.VUE_APP_SERVER + '/business/admin/council-members/update', {
           id: formData.id,
           name: formData.name,
           application: formData.application,

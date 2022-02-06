@@ -131,7 +131,7 @@
       });
       //保存新增文件
       const saveFile = () => {
-        axios.post('http://127.0.0.1:9000/business/admin/' + mapping.value + '-file/save', {
+        axios.post(process.env.VUE_APP_SERVER + '/business/admin/' + mapping.value + '-file/save', {
           slideId: slide_id.value,
           url: uploadFile.image,
         }).then((response) => {
@@ -158,7 +158,7 @@
 
       // 显示全部文件
       const ListAllFile = (slideId: any) => {
-        axios.get('http://127.0.0.1:9000/business/admin/' + url + '-file/list/' + slideId).then((response) => {
+        axios.get(process.env.VUE_APP_SERVER + '/business/admin/' + url + '-file/list/' + slideId).then((response) => {
           const data = response.data;
           //读取数据
           if (data.success) {
@@ -179,7 +179,7 @@
       //删除文件
       const deleteFile = (row: any) => {
         console.log(row.id + "@@@")
-        axios.get('http://127.0.0.1:9000/business/admin/' + url + '-file/delete/' + row.id).then((response) => {
+        axios.get(process.env.VUE_APP_SERVER + '/business/admin/' + url + '-file/delete/' + row.id).then((response) => {
           const data = response.data;
           if (data.success) {
             ElMessage.success("删除成功！")
@@ -199,7 +199,7 @@
 
       //查询文章内容
       const showContent = (slideId: any) => {
-        axios.get('http://127.0.0.1:9000/business/admin/' + url + '-content/show/' + slideId).then((response) => {
+        axios.get(process.env.VUE_APP_SERVER + '/business/admin/' + url + '-content/show/' + slideId).then((response) => {
           const data = response.data;
           if (data.success) {
             editor.txt.html(data.content);
@@ -210,7 +210,7 @@
       //保存文章内容
       const saveContent = () => {
         doc.value.content = editor.txt.html();
-        axios.post('http://127.0.0.1:9000/business/admin/' + url + '-content/save', {
+        axios.post(process.env.VUE_APP_SERVER + '/business/admin/' + url + '-content/save', {
           id: slide_id.value,
           content: doc.value.content
         }).then((response) => {
