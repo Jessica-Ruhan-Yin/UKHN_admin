@@ -20,6 +20,8 @@ import TradeBusiness from '../views/admin/trade/trade_business.vue'
 import TradePolicy from '../views/admin/trade/trade_policy.vue'
 import TradeProject from '../views/admin/trade/trade_project.vue'
 import TradePromotion from '../views/admin/trade/trade_promotion.vue'
+import {Tool} from "@/util/tool";
+import store from "@/store";
 
 
 const routes: Array<RouteRecordRaw> = [
@@ -34,6 +36,9 @@ const routes: Array<RouteRecordRaw> = [
     path: '/home',
     name: 'Home',
     component: Home,
+    meta:{
+      loginRequire:true
+    },
     children: [
       {
         path: '/intro/activity',
@@ -118,13 +123,29 @@ const routes: Array<RouteRecordRaw> = [
       },
     ]
   },
-
-
 ]
 
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes
 })
+
+// 路由登录拦截
+router.beforeEach((to, from, next) => {
+  // 要不要对meta.loginRequire属性做监控拦截
+  if (to.matched.some(function (item) {
+    return item.meta.loginRequire
+  })) {
+    const loginUser = store.state.user;
+    if (Tool.isEmpty(loginUser)) {
+      console.log("UNAUTHORIZED!");
+      next('/');
+    } else {
+      next();
+    }
+  } else {
+    next();
+  }
+});
 
 export default router
