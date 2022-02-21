@@ -78,7 +78,7 @@
 
       //上传图片成功回调
       const handleImageSuccess = (response: any) => {
-        console.log("图片地址：", response.content.path);
+        // console.log("图片地址：", response.content.path);
         imageUrl.value = response.content.path;
         context.emit('update:image', imageUrl.value);
         imageUrl.value = '';

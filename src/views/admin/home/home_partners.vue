@@ -166,7 +166,7 @@
       });
       //保存新增
       const saveFile = () => {
-        console.log(uploadFile);
+        // console.log(uploadFile);
         axios.post(process.env.VUE_APP_SERVER + '/business/admin/home-partners/save', {
           image: uploadFile.image,
           name: uploadFile.name,

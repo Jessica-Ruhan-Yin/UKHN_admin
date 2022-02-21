@@ -242,7 +242,7 @@
 
       //表格点击页码时触发
       const handleCurrentChange = (clickPage: any) => {
-        console.log("此次点击的页码是：" + clickPage);
+        // console.log("此次点击的页码是：" + clickPage);
         ListAllSlide({
           page: clickPage,
           size: 6
@@ -264,8 +264,8 @@
       });
       //保存新增轮播图文
       const saveFile = () => {
-        console.log(uploadFile);
-        console.log(form.value)
+        // console.log(uploadFile);
+        // console.log(form.value)
         axios.post(process.env.VUE_APP_SERVER + '/business/admin/home-ad/save', {
           date: uploadFile.date,
           image: uploadFile.image,
@@ -400,7 +400,7 @@
         SessionStorage.set("mapping", "home-ad");
         SessionStorage.set("category", "00000102");
         router.push("/content");
-        console.log("跳转详情，id：" + row.id);
+        // console.log("跳转详情，id：" + row.id);
       }
 
       onMounted(() => {

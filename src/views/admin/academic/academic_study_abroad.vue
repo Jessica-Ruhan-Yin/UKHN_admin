@@ -187,7 +187,7 @@
       });
       //保存新增
       const saveFile = () => {
-        console.log(uploadFile);
+        // console.log(uploadFile);
         axios.post(process.env.VUE_APP_SERVER + '/business/admin/academic-study-abroad/save', {
           image: uploadFile.image,
           text: uploadFile.text,
@@ -305,7 +305,7 @@
         SessionStorage.set("mapping","academic-study-abroad");
         SessionStorage.set("category","00000404");
         router.push("/content");
-        console.log("跳转详情，id：" + row.id);
+        // console.log("跳转详情，id：" + row.id);
       }
 
       onMounted(() => {

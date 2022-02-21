@@ -69,7 +69,6 @@
 
       //登录
       const login = () => {
-        console.log("开始登录")
         loginUser.value.password = hexMd5(loginUser.value.password + KEY);
         axios.post(process.env.VUE_APP_SERVER + '/system/admin/user/login', loginUser.value).then((response) => {
           const data = response.data;

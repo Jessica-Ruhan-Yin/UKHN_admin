@@ -220,7 +220,7 @@
       });
       //保存新增论坛
       const saveFile = () => {
-        console.log(newForum);
+        // console.log(newForum);
         axios.post(process.env.VUE_APP_SERVER + '/business/admin/academic-forum/save', {
           date: newForum.date,
           text: newForum.text,
@@ -337,7 +337,7 @@
         SessionStorage.set("mapping","academic-forum");
         SessionStorage.set("category","00000401");
         router.push("/content");
-        console.log("跳转详情，id：" + row.id);
+        // console.log("跳转详情，id：" + row.id);
       }
 
       onMounted(() => {

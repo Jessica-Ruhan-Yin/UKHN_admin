@@ -14,17 +14,17 @@ axios.interceptors.request.use(function (config) {
   const token = store.state.user.token;
   if (Tool.isNotEmpty(token)) {
     config.headers!.token = token;
-    console.log("请求headers增加token:", token);
+    // console.log("请求headers增加token:", token);
   }
   return config;
 }, error => {
   return Promise.reject(error);
 });
 axios.interceptors.response.use(function (response) {
-  console.log('返回结果：', response);
+  // console.log('返回结果：', response);
   return response;
 }, error => {
-  console.log('返回错误：', error);
+  // console.log('返回错误：', error);
   return Promise.reject(error);
 });
 

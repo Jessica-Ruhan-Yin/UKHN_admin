@@ -44,7 +44,6 @@
       const user = computed(() => store.state.user);
 
       const logout = () => {
-        console.log("退出登录开始");
         axios.get(process.env.VUE_APP_SERVER + '/system/admin/user/logout/' + user.value.token).then((response) => {
           const data = response.data;
           if (data.success) {

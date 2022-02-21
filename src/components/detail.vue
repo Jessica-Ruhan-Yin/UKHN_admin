@@ -178,7 +178,6 @@
 
       //删除文件
       const deleteFile = (row: any) => {
-        console.log(row.id + "@@@")
         axios.get(process.env.VUE_APP_SERVER + '/business/admin/' + url + '-file/delete/' + row.id).then((response) => {
           const data = response.data;
           if (data.success) {

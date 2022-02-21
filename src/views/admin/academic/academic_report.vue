@@ -198,7 +198,7 @@
 
       //表格点击页码时触发
       const handleCurrentChange = (clickPage: any) => {
-        console.log("此次点击的页码是：" + clickPage);
+        // console.log("此次点击的页码是：" + clickPage);
         ListAllReport({
           page: clickPage,
           size: 8
@@ -217,7 +217,7 @@
       });
       //保存新增论坛
       const saveFile = () => {
-        console.log(newReport);
+        // console.log(newReport);
         axios.post(process.env.VUE_APP_SERVER + '/business/admin/academic-report/save', {
           date: newReport.date,
           text: newReport.text,
@@ -337,7 +337,7 @@
         SessionStorage.set("mapping","academic-report");
         SessionStorage.set("category","00000403");
         router.push("/content");
-        console.log("跳转详情，id：" + row.id);
+        // console.log("跳转详情，id：" + row.id);
       }
 
       onMounted(() => {
