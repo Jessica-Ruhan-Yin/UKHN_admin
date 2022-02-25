@@ -46,6 +46,7 @@
   import axios from 'axios'
   import {ElMessage} from 'element-plus'
   import store from "@/store";
+  import {useRouter} from 'vue-router'
 
   declare let hexMd5: any;
   declare let KEY: any;
@@ -61,6 +62,8 @@
       //登录后保存
       const user = computed(() => store.state.user);
 
+      const router = useRouter()
+
       //用来登录
       const loginUser = ref({
         loginName: "",
@@ -69,13 +72,15 @@
 
       //登录
       const login = () => {
+
         loginUser.value.password = hexMd5(loginUser.value.password + KEY);
         axios.post(process.env.VUE_APP_SERVER + '/system/admin/user/login', loginUser.value).then((response) => {
           const data = response.data;
           if (data.success) {
             ElMessage.success('登录成功！')
             store.commit("setUser", data.content)
-            window.open("/home/news","_self")
+            // window.open("/home/news","_self")
+            router.push('/home/news')
           } else {
             ElMessage.error('用户名或密码错误！')
           }

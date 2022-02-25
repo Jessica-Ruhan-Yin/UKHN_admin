@@ -33,6 +33,7 @@
   import axios from 'axios'
   import store from "@/store";
   import {ElMessage} from 'element-plus'
+  import {useRouter} from 'vue-router'
 
   export default defineComponent({
     name: "the-header",
@@ -43,6 +44,8 @@
 
       const user = computed(() => store.state.user);
 
+      const router = useRouter()
+
       const logout = () => {
         axios.get(process.env.VUE_APP_SERVER + '/system/admin/user/logout/' + user.value.token).then((response) => {
           const data = response.data;
@@ -52,7 +55,8 @@
               type: 'success',
             })
             store.commit("setUser", {});
-            window.open("/login","_self")
+            // window.open("/login","_self")
+            router.push('/login')
           } else {
             ElMessage.error('退出登录失败！')
           }

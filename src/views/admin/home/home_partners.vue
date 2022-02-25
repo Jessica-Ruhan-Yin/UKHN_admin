@@ -142,11 +142,14 @@
 
       // 显示全部轮播图文
       const ListAllSlide = () => {
-        axios.get(process.env.VUE_APP_SERVER + "/business/admin/home-partners/list").then((response) => {
+        axios.post(process.env.VUE_APP_SERVER + "/business/admin/home-partners/list", {
+          page: '1',
+          size: ''
+        }).then((response) => {
           const data = response.data;
           //读取数据
           if (data.success) {
-            tableData.value = data.content
+            tableData.value = data.content.list
           } else {
             ElMessage.error(data.message);
           }

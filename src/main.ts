@@ -8,7 +8,7 @@ import '../theme/index.css'
 import axios from "axios";
 import {Tool} from "@/util/tool";
 
-
+axios.defaults.baseURL = process.env.VUE_APP_SERVER;
 
 axios.interceptors.request.use(function (config) {
   const token = store.state.user.token;
