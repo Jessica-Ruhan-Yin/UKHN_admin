@@ -1,6 +1,6 @@
 <template>
-  <h3>产业合作资源更新——英国及爱尔兰企业合作</h3>
-  <p class="title">英国及爱尔兰企业合作资源</p>
+  <h3>项目合作资源更新——英国及爱尔兰项目合作</h3>
+  <p class="title">英国及爱尔兰项目合作资源</p>
 
   <el-button class="fresh"
              @click="ListShowSlide"
@@ -12,7 +12,7 @@
   >新增
   </el-button>
   <!--新增时的弹出框表单-->
-  <el-dialog v-model="addFormVisible" title="新增英国及爱尔兰企业合作">
+  <el-dialog v-model="addFormVisible" title="新增英国及爱尔兰项目合作">
     <el-form v-model="uploadFile">
 
       <el-form-item label="日期" prop="date" style="margin-top: 10px; vertical-align: middle">
@@ -99,7 +99,7 @@
   </el-table>
 
   <!--新增链接模态框-->
-  <el-dialog v-model="addUrlVisible" title="新增英国及爱尔兰企业合作链接">
+  <el-dialog v-model="addUrlVisible" title="新增英国及爱尔兰项目合作链接">
     <el-form v-model="uploadUrl">
       <el-form-item label="链接" prop="text">
         <el-input autocomplete="off"
@@ -396,7 +396,7 @@
       //跳转到活动详情
       const jumpToDetail = (row: any) => {
         SessionStorage.set("slideId", row.id);
-        SessionStorage.set("menu","产业合作——英国及爱尔兰企业合作");
+        SessionStorage.set("menu","项目合作——英国及爱尔兰项目合作");
         SessionStorage.set("mapping","collaboration-UK-Ireland");
         SessionStorage.set("category","00000302");
         router.push("/content");

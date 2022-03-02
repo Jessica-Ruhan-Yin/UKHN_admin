@@ -1,6 +1,6 @@
 <template>
-  <h3>产业合作资源更新——国内企业合作</h3>
-  <p class="title">国内企业合作资源</p>
+  <h3>项目合作资源更新——国内项目合作</h3>
+  <p class="title">国内项目合作资源</p>
 
   <el-button class="fresh"
              @click="ListShowSlide"
@@ -12,7 +12,7 @@
   >新增
   </el-button>
   <!--新增时的弹出框表单-->
-  <el-dialog v-model="addFormVisible" title="新增国内企业合作">
+  <el-dialog v-model="addFormVisible" title="新增国内项目合作">
     <el-form v-model="uploadFile">
 
       <el-form-item label="日期" prop="date" style="margin-top: 10px; vertical-align: middle">
@@ -392,7 +392,7 @@
       //跳转到活动详情
       const jumpToDetail = (row: any) => {
         SessionStorage.set("slideId", row.id);
-        SessionStorage.set("menu","产业合作-国内企业合作");
+        SessionStorage.set("menu","项目合作-国内项目合作");
         SessionStorage.set("mapping","collaboration-China");
         SessionStorage.set("category","00000301");
         router.push("/content");

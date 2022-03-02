@@ -52,16 +52,16 @@
                 <el-icon class="icon" size="20">
                   <histogram/>
                 </el-icon>
-                <span>产业合作</span>
+                <span>项目合作</span>
               </template>
               <router-link class="link" to="/collaboration/China">
-                <el-menu-item index="3-1">国内企业合作</el-menu-item>
+                <el-menu-item index="3-1">国内项目合作</el-menu-item>
               </router-link>
               <router-link class="link" to="/collaboration/UK-Ireland">
-                <el-menu-item index="3-2">英国及爱尔兰企业合作</el-menu-item>
+                <el-menu-item index="3-2">英国及爱尔兰项目合作</el-menu-item>
               </router-link>
               <router-link class="link" to="/collaboration/CUI">
-                <el-menu-item index="3-3">中英、中爱企业合作</el-menu-item>
+                <el-menu-item index="3-3">中英、中爱项目合作</el-menu-item>
               </router-link>
             </el-sub-menu>
             <el-sub-menu index="4">
