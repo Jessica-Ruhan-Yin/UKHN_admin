@@ -37,6 +37,14 @@
         ></el-input>
       </el-form-item>
 
+      <el-form-item label="分类">
+        <el-select v-model="uploadFile.type" placeholder="合作机构分类">
+          <el-option label="同乡会" value="1"></el-option>
+          <el-option label="国内企业" value="2"></el-option>
+          <el-option label="国外企业" value="3"></el-option>
+        </el-select>
+      </el-form-item>
+
     </el-form>
     <template #footer>
             <span class="dialog-footer">
@@ -55,7 +63,8 @@
       </template>
     </el-table-column>
     <el-table-column label="机构名称" prop="name" width="200px" align="center"/>
-    <el-table-column label="链接" prop="url" width="400px" align="center"/>
+    <el-table-column label="链接" prop="url" width="300px" align="center"/>
+    <el-table-column label="类别" prop="type" width="100px" align="center"/>
     <el-table-column label="操作" prop="operation" align="center">
       <template v-slot="scope">
         <el-button size="mini" class="normal-button" @click="edit(scope.row)">编辑</el-button>
@@ -105,6 +114,14 @@
                   type="text"
                   v-model="formData.url"
         ></el-input>
+      </el-form-item>
+
+      <el-form-item label="分类">
+        <el-select v-model="formData.type" placeholder="合作机构分类">
+          <el-option label="同乡会" value="1"></el-option>
+          <el-option label="国外企业" value="2"></el-option>
+          <el-option label="国内企业" value="3"></el-option>
+        </el-select>
       </el-form-item>
     </el-form>
     <template #footer>
@@ -165,6 +182,7 @@
         image: '',
         name: '',
         url: '',
+        type: '',
         category: '00000103',
       });
       //保存新增
@@ -174,7 +192,8 @@
           image: uploadFile.image,
           name: uploadFile.name,
           category: uploadFile.category,
-          url: uploadFile.url
+          url: uploadFile.url,
+          type: uploadFile.type
         }).then((response) => {
           const data = response.data;
           if (data.success) {
@@ -183,6 +202,7 @@
             uploadFile.category = '';
             uploadFile.name = '';
             uploadFile.url = '';
+            uploadFile.type = '';
             clearImage();
             addFormVisible.value = false;
             ListAllSlide();
@@ -202,7 +222,8 @@
         id: '',
         image: '',
         name: '',
-        url: ''
+        url: '',
+        type: ''
       });//定义表单数据
       //编辑，打开表单，表单赋值
       const edit = (row: any) => {
@@ -210,6 +231,7 @@
         formData.image = row.image;
         formData.name = row.name;
         formData.url = row.url;
+        formData.type = row.type;
         editFormVisible.value = true;
       };
       //保存编辑
@@ -219,6 +241,7 @@
           image: formData.image,
           name: formData.name,
           url: formData.url,
+          type: formData.type,
         }).then((response) => {
           const data = response.data;
           if (data.success) {
@@ -266,7 +289,8 @@
       }
     }
 
-  });
+  })
+  ;
 </script>
 
 <style scoped>
