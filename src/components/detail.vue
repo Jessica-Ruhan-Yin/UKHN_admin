@@ -201,7 +201,7 @@
         axios.get(process.env.VUE_APP_SERVER + '/business/admin/' + url + '-content/show/' + slideId).then((response) => {
           const data = response.data;
           if (data.success) {
-            editor.txt.html(data.content);
+            editor.txt.html(data.content.content);
           }
         })
       }

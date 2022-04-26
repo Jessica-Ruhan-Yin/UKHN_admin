@@ -40,8 +40,8 @@
       <el-form-item label="分类">
         <el-select v-model="uploadFile.type" placeholder="合作机构分类">
           <el-option label="同乡会" value="1"></el-option>
-          <el-option label="国内企业" value="2"></el-option>
-          <el-option label="国外企业" value="3"></el-option>
+          <el-option label="国外企业" value="2"></el-option>
+          <el-option label="国内企业" value="3"></el-option>
         </el-select>
       </el-form-item>
 
