@@ -21,9 +21,11 @@ axios.interceptors.request.use(function (config) {
   return Promise.reject(error);
 });
 axios.interceptors.response.use(function (response) {
+  //发布时需要注释拦截器，防止信息泄露
   // console.log('返回结果：', response);
   return response;
 }, error => {
+  //发布时需要注释拦截器，防止信息泄露
   // console.log('返回错误：', error);
   return Promise.reject(error);
 });
