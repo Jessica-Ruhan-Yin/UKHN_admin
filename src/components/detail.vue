@@ -178,7 +178,7 @@
 
       //删除文件
       const deleteFile = (row: any) => {
-        axios.get(process.env.VUE_APP_SERVER + '/business/admin/' + url + '-file/delete/' + row.id).then((response) => {
+        axios.delete(process.env.VUE_APP_SERVER + '/business/admin/' + url + '-file/delete/' + row.id).then((response) => {
           const data = response.data;
           if (data.success) {
             ElMessage.success("删除成功！")
@@ -196,12 +196,16 @@
       const doc = ref();
       doc.value = {};
 
+      const view = ref();
+      view.value = 1;
+
       //查询文章内容
       const showContent = (slideId: any) => {
         axios.get(process.env.VUE_APP_SERVER + '/business/admin/' + url + '-content/show/' + slideId).then((response) => {
           const data = response.data;
           if (data.success) {
             editor.txt.html(data.content.content);
+            view.value = data.content.view;
           }
         })
       }
@@ -211,7 +215,8 @@
         doc.value.content = editor.txt.html();
         axios.post(process.env.VUE_APP_SERVER + '/business/admin/' + url + '-content/save', {
           id: slide_id.value,
-          content: doc.value.content
+          content: doc.value.content,
+          view: view.value
         }).then((response) => {
           const data = response.data;
           if (data.success) {
@@ -238,6 +243,7 @@
         ListAllFile(slideId.value);
         showContent(slideId.value)
         editor.create();
+        editor.txt.html("");
       });
 
       return {

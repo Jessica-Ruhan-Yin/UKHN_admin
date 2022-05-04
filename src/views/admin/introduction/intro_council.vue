@@ -197,6 +197,7 @@
     color: black;
     text-shadow: 3px 3px 3px #bdc2ff;
   }
+
   .normal-button {
     background-color: rgba(212, 212, 255, 0.4);
     border-color: #868EFF;

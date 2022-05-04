@@ -19,13 +19,16 @@
   import {defineComponent} from 'vue';
   import {useRouter} from 'vue-router';
 
+  declare let SessionStorage: any;
+
   export default defineComponent({
     name: 'Detail',
     components: {},
     setup() {
       const router = useRouter()
       const goBack = () => {
-        router.go(-1)
+        router.go(-1);
+
       }
       return {
         goBack

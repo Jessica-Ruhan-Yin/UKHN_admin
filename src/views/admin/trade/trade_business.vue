@@ -341,7 +341,7 @@
 
       //删除轮播图文
       const deleteFile = (row: any) => {
-        axios.get(process.env.VUE_APP_SERVER + '/business/admin/trade-business/delete/' + row.id).then((response) => {
+        axios.delete(process.env.VUE_APP_SERVER + '/business/admin/trade-business/delete/' + row.id).then((response) => {
           const data = response.data;
           if (data.success) {
             ElMessage.success("删除成功！")
