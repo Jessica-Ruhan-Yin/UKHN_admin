@@ -1,5 +1,10 @@
 # admin
 ```
+该项目为ukhainan官网控台前端
+控台前端展示所有资源，可以上传/编辑/删除所有资源
+网址：http://admin.ukhainan.com
+```
+```
 username: admin
 password: ukhnadmin
 ```
