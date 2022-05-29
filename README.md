@@ -1,13 +1,8 @@
 # admin
 ```
-该项目为ukhainan官网控台前端
-控台前端展示所有资源，可以上传/编辑/删除所有资源
-网址：http://admin.ukhainan.com
+This is the admin dashboard for UKHN official website
 ```
-```
-username: admin
-password: ukhnadmin
-```
+
 
 ### gitee repository
 ```
@@ -57,22 +52,22 @@ TypeScript
 --static
 ---image
 ---js
-----enum:枚举类
-----local-storage:将变量存储在local
-----md5.js: md5加密密码算法
-----session-storage: 页面跳转时将信息存储在session
+----enum
+----local-storage
+----md5.js
+----session-storage
 -src
 --components
----bigFile:上传图片视频文件组件
----detail: 文章详情页页面
----the-body: 主页面设计，包含侧边栏menu
----the-header: header组件，包含退出登录
---filter: 工具类
---router: 跳转路由
---store: vuex存储登录用户信息
---tool: 工具类
---views: 页面
---main: 包含axios拦截器，用于控台输出req和resp
+---bigFile
+---detail
+---the-body
+---the-header
+--filter: tool
+--router
+--store
+--tool
+--view
+--main
 
 ```
 
