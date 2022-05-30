@@ -6,7 +6,7 @@ This is the admin dashboard for UKHN official website
 <img src='https://ukhn-admin.oss-cn-hongkong.aliyuncs.com/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20220530134319.png?versionId=CAEQMRiBgMDu.fvNiBgiIDRkNGQ3YmZkMmFmZTQwOTI4Y2YzN2E0MjJmOTMwNWEz' width=800px/><br/>
 
 ```
-Administrators can sign in the dashborad and manage the resources of the website.
+Administrators can login to the dashboard and manage the resources of the website.
 ```
 
 ### Code installation
